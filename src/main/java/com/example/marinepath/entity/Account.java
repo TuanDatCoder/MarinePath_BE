@@ -28,6 +28,10 @@ public class Account implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @ManyToOne
+    @JoinColumn(name = "company_id", nullable = true)
+    private Company company;
+
     @Email
     @Column(name = "email",unique = true, nullable = false)
     private String email;

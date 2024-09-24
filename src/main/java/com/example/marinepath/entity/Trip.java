@@ -26,11 +26,11 @@ public class Trip {
 
     @ManyToMany
     @JoinTable(
-            name = "trip_staff",
+            name = "trip_account",
             joinColumns = @JoinColumn(name = "trip_id"),
-            inverseJoinColumns = @JoinColumn(name = "staff_id")
+            inverseJoinColumns = @JoinColumn(name = "account_id")
     )
-    private Set<Staff> staff;
+    private Set<Account> account;
 
     @Column(name = "weight",nullable = false)
     private Float weight;
