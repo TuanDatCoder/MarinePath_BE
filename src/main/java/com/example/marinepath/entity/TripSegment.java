@@ -44,3 +44,4 @@ public class TripSegment {
     @Column(name = "is_deleted",nullable = false)
     private Boolean isDeleted;
 }
+///hfghfhfghfghfhfh
