@@ -30,6 +30,9 @@ public class Container {
     @ManyToMany(mappedBy = "containers")
     private Set<PortDocument> portDocuments;
 
+    @Column(name = "container_code",nullable = false)
+    private Float containerCode;
+
     @Column(name = "weight",nullable = false)
     private Float weight;
 
