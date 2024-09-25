@@ -3,9 +3,9 @@ services:
   postgres:
     image: postgres:15
     environment:
-      POSTGRES_DB: MarinePath
+      POSTGRES_DB: AccountManagement
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: DatVy2003
+      POSTGRES_PASSWORD: 12345
     ports:
       - "5432:5432"
     volumes:
@@ -16,13 +16,15 @@ services:
   app:
     build:
       context: .
-      dockerfile: src/main/Dockerfile
+      dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "8081:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://marinepath.c5e0iiuioxbm.us-east-1.rds.amazonaws.com:5432/MarinePath
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: DatVy2003
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      FIREBASE_CREDENTIALS_PATH: ${FIREBASE_CREDENTIALS_PATH}
     depends_on:
       - postgres
     networks:
