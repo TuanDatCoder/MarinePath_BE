@@ -19,7 +19,7 @@ public class OpenApiConfig {
                         .description("Fist Code SWD392"))
                 .servers(List.of(
                         new Server().url("http://localhost:8080").description("Local server"),
-                        new Server().url("http://54.250.6.53:8081").description("Cloud server") // Thêm server cloud
+                        new Server().url("http://35.79.225.31:8081").description("Cloud server") // Thêm server cloud
                 ));
     }
 }
