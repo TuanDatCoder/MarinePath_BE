@@ -29,6 +29,10 @@ public class JwtTokenUtil implements Serializable {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
+    public String getRoleFromToken(String token) {
+        return getClaimFromToken(token, claims -> claims.get("role", String.class));
+    }
+
     public Date getExpirationDateFromToken(String token) {
         return getClaimFromToken(token, Claims::getExpiration);
     }
@@ -53,6 +57,7 @@ public class JwtTokenUtil implements Serializable {
             throw new InvalidToken("Error parsing token: " + e.getMessage());
         }
     }
+
     public String extractEmail(String token) {
         return getEmailFromToken(token);
     }
@@ -63,16 +68,25 @@ public class JwtTokenUtil implements Serializable {
     }
 
     public String generateToken(UserDetails userDetails) {
-        return doGenerateToken(userDetails.getUsername(), JWT_TOKEN_VALIDITY);
+        String role = userDetails.getAuthorities().stream()
+                .findFirst()
+                .map(Object::toString)
+                .orElse("");
+        return doGenerateToken(userDetails.getUsername(), role, JWT_TOKEN_VALIDITY);
     }
 
     public String generateRefreshToken(UserDetails userDetails) {
-        return doGenerateToken(userDetails.getUsername(), REFRESH_TOKEN_VALIDITY);
+        String role = userDetails.getAuthorities().stream()
+                .findFirst()
+                .map(Object::toString)
+                .orElse("");
+        return doGenerateToken(userDetails.getUsername(), role, REFRESH_TOKEN_VALIDITY);
     }
 
-    private String doGenerateToken(String subject, long validityInSeconds) {
+    private String doGenerateToken(String subject, String role, long validityInSeconds) {
         return Jwts.builder()
                 .setSubject(subject)
+                .claim("role", role) // Thêm role vào payload
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + validityInSeconds * 1000))
                 .signWith(SignatureAlgorithm.HS512, secret)
@@ -81,7 +95,9 @@ public class JwtTokenUtil implements Serializable {
 
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String email = getEmailFromToken(token);
-        return (email.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        final String role = getRoleFromToken(token); // Lấy role từ token
+        return (email.equals(userDetails.getUsername()) &&
+                role.equals(userDetails.getAuthorities().stream().findFirst().map(Object::toString).orElse("")) &&
+                !isTokenExpired(token));
     }
-
 }
