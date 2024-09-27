@@ -5,8 +5,7 @@ import jakarta.persistence.Entity;
 import lombok.*;
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 
 @Data
@@ -34,6 +33,9 @@ public class PortDocument {
     @Enumerated(EnumType.STRING)
     @Column(name = "status",nullable = false)
     private PortDocumentStatusEnum status;
+
+    @OneToMany(mappedBy = "port_document")
+    private List<ContainerReceipt> containerReceipts;
 
 
 }

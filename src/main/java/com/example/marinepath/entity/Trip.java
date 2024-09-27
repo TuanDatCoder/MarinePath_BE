@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -55,5 +55,11 @@ public class Trip {
     @Enumerated(EnumType.STRING)
     @Column(name = "status",nullable = false)
     private TripStatusEnum status;
+
+    @OneToMany(mappedBy = "trip")
+    private List<TripSegment> tripSegments;
+
+    @OneToMany(mappedBy = "trip")
+    private List<Order> orders;
 
 }

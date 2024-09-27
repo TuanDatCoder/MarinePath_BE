@@ -16,6 +16,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -66,6 +68,9 @@ public class Account implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(name = "status",nullable = false)
     private AccountStatusEnum status;
+
+    @OneToMany(mappedBy = "account")
+    private List<Trip> trips;
 
 @Transient
 @Override

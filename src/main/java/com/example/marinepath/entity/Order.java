@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -48,5 +49,9 @@ public class Order {
     @Column(name = "status",nullable = false)
     @Enumerated(EnumType.STRING)
     private OrderStatusEnum status;
+
+    @OneToMany(mappedBy = "order")
+    private List<Container> containers;
+
 
 }
