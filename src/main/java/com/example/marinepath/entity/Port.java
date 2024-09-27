@@ -41,13 +41,12 @@ public class Port {
     @Column(name = "status", nullable = false)
     private PortStatusEnum status;
 
-    @OneToMany(mappedBy = "startPort")
+    @OneToMany(mappedBy = "startPort") // Sửa lại để chỉ đến startPort
     private List<TripSegment> startTripSegments;
 
-    @OneToMany(mappedBy = "endPort")
+    @OneToMany(mappedBy = "endPort") // Sửa lại để chỉ đến endPort
     private List<TripSegment> endTripSegments;
 
-    @OneToMany(mappedBy = "Port")
+    @OneToMany(mappedBy = "port")
     private List<Container> containers;
-
 }

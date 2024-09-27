@@ -23,10 +23,6 @@ public class PortDocument {
     @JoinColumn(name = "trip_segment_id", nullable = false)
     private TripSegment tripSegment;
 
-    @ManyToOne
-    @JoinColumn(name = "port_id", nullable = false)
-    private Port port;
-
     @Column(name = "name")
     private String name;
 
@@ -34,8 +30,9 @@ public class PortDocument {
     @Column(name = "status",nullable = false)
     private PortDocumentStatusEnum status;
 
-    @OneToMany(mappedBy = "port_document")
+    @OneToMany(mappedBy = "portDocument")
     private List<ContainerReceipt> containerReceipts;
+
 
 
 }
