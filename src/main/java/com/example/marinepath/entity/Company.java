@@ -1,9 +1,12 @@
 package com.example.marinepath.entity;
 
+import com.example.marinepath.entity.Enum.CompanyStatusEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -25,6 +28,17 @@ public class Company {
     @Column(name = "address",nullable = false)
     private String address;
 
-    @Column(name = "is_deleted",nullable = false)
-    private Boolean isDeleted;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status",nullable = false)
+    private CompanyStatusEnum status;
+
+    @OneToMany(mappedBy = "company")
+    private List<Account> accounts;
+
+    @OneToMany(mappedBy = "company")
+    private List<Ship> ships;
+
+    @OneToMany(mappedBy = "company")
+    private List<Trip> trips;
+
 }

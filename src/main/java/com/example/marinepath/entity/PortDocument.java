@@ -1,11 +1,11 @@
 package com.example.marinepath.entity;
 
+import com.example.marinepath.entity.Enum.PortDocumentStatusEnum;
 import jakarta.persistence.Entity;
 import lombok.*;
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 
 @Data
@@ -23,22 +23,16 @@ public class PortDocument {
     @JoinColumn(name = "trip_segment_id", nullable = false)
     private TripSegment tripSegment;
 
-    @ManyToMany
-    @JoinTable(
-            name = "port_document_container",
-            joinColumns = @JoinColumn(name = "port_document_id"),
-            inverseJoinColumns = @JoinColumn(name = "container_id")
-    )
-    private Set<Container> containers = new HashSet<>();
-
-
     @Column(name = "name")
     private String name;
 
-    @Column(name = "status")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status",nullable = false)
+    private PortDocumentStatusEnum status;
 
-    @Column(name = "is_deleted")
-    private Boolean isDeleted = false;
+    @OneToMany(mappedBy = "portDocument")
+    private List<ContainerReceipt> containerReceipts;
+
+
 
 }

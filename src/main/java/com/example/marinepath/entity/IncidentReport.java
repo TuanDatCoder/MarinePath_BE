@@ -19,8 +19,8 @@ public class IncidentReport {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "trip_id")
-    private Trip trip;
+    @JoinColumn(name = "trip_segment_id")
+    private TripSegment tripSegment;
 
     @Column(name = "description",nullable = false)
     private String description;
@@ -31,8 +31,5 @@ public class IncidentReport {
     @Enumerated(EnumType.STRING)
     @Column(name = "status",nullable = false)
     private IncidentReportStatusEnum status;
-
-    @Column(name = "is_deleted",nullable = false)
-    private Boolean isDeleted;
 
 }
