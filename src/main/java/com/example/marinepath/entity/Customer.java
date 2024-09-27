@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -18,7 +19,7 @@ public class Customer{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Email
     @Column(name = "email",unique = true, nullable = false)
@@ -35,16 +36,14 @@ public class Customer{
     @Column(name = "role",nullable = false)
     private CustomerPositionEnum role;
 
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 
     @Column(name = "status",nullable = false)
     @Enumerated(EnumType.STRING)
     private CustomerStatusEnum status;
 
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
-
-    @Column(name = "is_deleted",nullable = false)
-    private Boolean isDeleted;
-
+    @OneToMany(mappedBy = "customer")
+    private List<Order> orders;
 
 }

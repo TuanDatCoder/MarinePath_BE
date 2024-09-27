@@ -7,6 +7,7 @@ import lombok.*;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -32,10 +33,6 @@ public class Ship {
     @Column(name = "capacity",nullable = false)
     private Integer capacity;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status",nullable = false)
-    private ShipStatusEnum status;
-
     @Column(name = "build_year",nullable = false)
     private Integer buildYear;
 
@@ -52,7 +49,11 @@ public class Ship {
     @Column(name = "updated_at",nullable = false)
     private LocalDateTime updatedAt;
 
-    @Column(name = "is_deleted",nullable = false)
-    private Boolean isDeleted;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status",nullable = false)
+    private ShipStatusEnum status;
+
+    @OneToMany(mappedBy = "ship")
+    private List<Trip> trips;
 
 }

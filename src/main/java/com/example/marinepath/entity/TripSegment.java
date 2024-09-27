@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -38,10 +40,12 @@ public class TripSegment {
     private LocalDateTime endDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status",nullable = false)
+    @Column(name = "status", nullable = false)
     private TripSegmentStatusEnum status;
 
-    @Column(name = "is_deleted",nullable = false)
-    private Boolean isDeleted;
+    @OneToMany(mappedBy = "tripSegment") // Đổi thành tripSegment
+    private List<IncidentReport> incidentReports;
+
+    @OneToMany(mappedBy = "tripSegment") // Đổi thành tripSegment
+    private List<PortDocument> portDocuments;
 }
-///hfghfhfghfghfhfh

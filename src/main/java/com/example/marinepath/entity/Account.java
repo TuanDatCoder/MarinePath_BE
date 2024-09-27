@@ -16,6 +16,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -60,15 +62,15 @@ public class Account implements UserDetails {
     @Column(name = "provider",nullable = false)
     private AccountProviderEnum provider;
 
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status",nullable = false)
     private AccountStatusEnum status;
 
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
-
-    @Column(name = "is_deleted",nullable = false)
-    private Boolean isDeleted;
+    @OneToMany(mappedBy = "account")
+    private List<Trip> trips;
 
 @Transient
 @Override
