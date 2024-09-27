@@ -34,5 +34,4 @@ public class ContainerReceipt {
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private DeliveryStatusEnum status;
-
 }

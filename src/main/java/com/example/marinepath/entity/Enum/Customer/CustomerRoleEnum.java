@@ -1,6 +1,6 @@
 package com.example.marinepath.entity.Enum.Customer;
 
-public enum CustomerPositionEnum {
+public enum CustomerRoleEnum {
     REGULAR_USER,
     PREMIUM_USER,
 }
