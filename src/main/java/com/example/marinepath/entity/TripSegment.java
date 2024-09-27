@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -42,9 +43,9 @@ public class TripSegment {
     @Column(name = "status", nullable = false)
     private TripSegmentStatusEnum status;
 
-    @OneToMany(mappedBy = "trip_segment")
+    @OneToMany(mappedBy = "tripSegment") // Đổi thành tripSegment
     private List<IncidentReport> incidentReports;
 
-    @OneToMany(mappedBy = "trip_segment")
+    @OneToMany(mappedBy = "tripSegment") // Đổi thành tripSegment
     private List<PortDocument> portDocuments;
 }
