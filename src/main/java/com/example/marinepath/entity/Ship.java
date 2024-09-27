@@ -7,6 +7,7 @@ import lombok.*;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -51,5 +52,8 @@ public class Ship {
     @Enumerated(EnumType.STRING)
     @Column(name = "status",nullable = false)
     private ShipStatusEnum status;
+
+    @OneToMany(mappedBy = "ship")
+    private List<Trip> trips;
 
 }

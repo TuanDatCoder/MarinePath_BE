@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -18,7 +19,7 @@ public class Customer{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Email
     @Column(name = "email",unique = true, nullable = false)
@@ -41,5 +42,8 @@ public class Customer{
     @Column(name = "status",nullable = false)
     @Enumerated(EnumType.STRING)
     private CustomerStatusEnum status;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Order> orders;
 
 }

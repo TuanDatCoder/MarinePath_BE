@@ -6,6 +6,7 @@ import lombok.*;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -18,26 +19,35 @@ public class Port {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "name",nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "location",nullable = false)
+    @Column(name = "location", nullable = false)
     private String location;
 
-    @Column(name = "capacity",nullable = false)
+    @Column(name = "capacity", nullable = false)
     private Integer capacity;
 
-    @Column(name = "contact_info",nullable = false)
+    @Column(name = "contact_info", nullable = false)
     private String contactInfo;
 
-    @Column(name = "created_at",nullable = false)
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at",nullable = false)
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status",nullable = false)
+    @Column(name = "status", nullable = false)
     private PortStatusEnum status;
+
+    @OneToMany(mappedBy = "startPort")
+    private List<TripSegment> startTripSegments;
+
+    @OneToMany(mappedBy = "endPort")
+    private List<TripSegment> endTripSegments;
+
+    @OneToMany(mappedBy = "Port")
+    private List<Container> containers;
 
 }
