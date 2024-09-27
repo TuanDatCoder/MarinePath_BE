@@ -36,10 +36,6 @@ public class Order {
     @Column(name = "requestDate",nullable = false)
     private LocalDateTime requestDate;
 
-    @Column(name = "status",nullable = false)
-    @Enumerated(EnumType.STRING)
-    private OrderStatusEnum status;
-
     @Column(name = "payment_detail",nullable = false)
     private String PaymentDetail;
 
@@ -49,6 +45,8 @@ public class Order {
     @Column(name = "expired_at",nullable = false)
     private LocalDateTime expiredAt;
 
-    @Column(name = "is_deleted",nullable = false)
-    private Boolean isDeleted;
+    @Column(name = "status",nullable = false)
+    @Enumerated(EnumType.STRING)
+    private OrderStatusEnum status;
+
 }

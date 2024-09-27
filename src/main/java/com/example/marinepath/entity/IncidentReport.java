@@ -32,7 +32,4 @@ public class IncidentReport {
     @Column(name = "status",nullable = false)
     private IncidentReportStatusEnum status;
 
-    @Column(name = "is_deleted",nullable = false)
-    private Boolean isDeleted;
-
 }

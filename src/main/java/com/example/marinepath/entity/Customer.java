@@ -35,16 +35,11 @@ public class Customer{
     @Column(name = "role",nullable = false)
     private CustomerPositionEnum role;
 
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 
     @Column(name = "status",nullable = false)
     @Enumerated(EnumType.STRING)
     private CustomerStatusEnum status;
-
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
-
-    @Column(name = "is_deleted",nullable = false)
-    private Boolean isDeleted;
-
 
 }

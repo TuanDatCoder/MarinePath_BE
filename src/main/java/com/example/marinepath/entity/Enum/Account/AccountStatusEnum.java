@@ -4,6 +4,7 @@ public enum AccountStatusEnum {
     VERIFIED,
     UNVERIFIED,
     BLOCKED,
-    UNBLOCKED
+    UNBLOCKED,
+    DELETED
 
 }

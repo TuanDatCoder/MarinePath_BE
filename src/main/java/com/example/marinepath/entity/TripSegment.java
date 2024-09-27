@@ -41,7 +41,4 @@ public class TripSegment {
     @Column(name = "status",nullable = false)
     private TripSegmentStatusEnum status;
 
-    @Column(name = "is_deleted",nullable = false)
-    private Boolean isDeleted;
 }
-///hfghfhfghfghfhfh

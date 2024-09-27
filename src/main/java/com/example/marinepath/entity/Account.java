@@ -60,15 +60,12 @@ public class Account implements UserDetails {
     @Column(name = "provider",nullable = false)
     private AccountProviderEnum provider;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status",nullable = false)
-    private AccountStatusEnum status;
-
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "is_deleted",nullable = false)
-    private Boolean isDeleted;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status",nullable = false)
+    private AccountStatusEnum status;
 
 @Transient
 @Override

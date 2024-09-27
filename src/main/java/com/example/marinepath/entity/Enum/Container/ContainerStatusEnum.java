@@ -1,7 +1,8 @@
-package com.example.marinepath.entity.Enum;
+package com.example.marinepath.entity.Enum.Container;
 
 public enum ContainerStatusEnum {
     AT_ORIGIN_PORT, //Đang ở cảng xuất phát.
     ON_VESSEL, //Đang trên tàu.
     AT_DESTINATION_PORT, //Đã tới cảng đích.
+    DELETED
 }
