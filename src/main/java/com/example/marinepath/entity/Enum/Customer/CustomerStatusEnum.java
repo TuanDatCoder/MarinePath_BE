@@ -4,6 +4,7 @@ public enum CustomerStatusEnum {
     VERIFIED,
     UNVERIFIED,
     BLOCKED,
-    UNBLOCKED
+    UNBLOCKED,
+    DELETED
 
 }

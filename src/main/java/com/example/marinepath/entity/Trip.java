@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -23,14 +23,13 @@ public class Trip {
     @ManyToOne
     @JoinColumn(name = "ship_id", nullable = false)
     private Ship ship;
+    @ManyToOne
+    @JoinColumn(name = "account_id", nullable = false)
+    private Account account;
 
-    @ManyToMany
-    @JoinTable(
-            name = "trip_account",
-            joinColumns = @JoinColumn(name = "trip_id"),
-            inverseJoinColumns = @JoinColumn(name = "account_id")
-    )
-    private Set<Account> account;
+    @ManyToOne
+    @JoinColumn(name = "company_id", nullable = true)
+    private Company company;
 
     @Column(name = "weight",nullable = false)
     private Float weight;
@@ -47,16 +46,20 @@ public class Trip {
     @Column(name = "end_date", nullable = false)
     private LocalDateTime endDate;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status",nullable = false)
-    private TripStatusEnum status;
-
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    @Column(name = "is_deleted",nullable = false)
-    private Boolean isDeleted;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status",nullable = false)
+    private TripStatusEnum status;
+
+    @OneToMany(mappedBy = "trip")
+    private List<TripSegment> tripSegments;
+
+    @OneToMany(mappedBy = "trip")
+    private List<Order> orders;
+
 }
