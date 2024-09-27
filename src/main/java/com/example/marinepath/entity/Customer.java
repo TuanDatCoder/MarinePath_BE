@@ -34,7 +34,7 @@ public class Customer{
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role",nullable = false)
-    private CustomerPositionEnum role;
+    private CustomerRoleEnum role;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;

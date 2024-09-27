@@ -34,7 +34,7 @@ public class Trip {
     @Column(name = "weight",nullable = false)
     private Float weight;
 
-    @Column(name = "desciption",nullable = false)
+    @Column(name = "description",nullable = false)
     private String description;
 
     @Column(name = "container_count",nullable = false)
