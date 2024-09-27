@@ -1,5 +1,6 @@
 package com.example.marinepath.entity;
 
+import com.example.marinepath.entity.Enum.PortStatusEnum;
 import jakarta.persistence.Entity;
 import lombok.*;
 import jakarta.persistence.*;
@@ -35,7 +36,8 @@ public class Port {
     @Column(name = "updated_at",nullable = false)
     private LocalDateTime updatedAt;
 
-    @Column(name = "is_deleted",nullable = false)
-    private Boolean isDeleted;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status",nullable = false)
+    private PortStatusEnum status;
 
 }

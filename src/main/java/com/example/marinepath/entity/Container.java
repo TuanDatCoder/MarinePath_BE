@@ -1,6 +1,7 @@
 package com.example.marinepath.entity;
 
-import com.example.marinepath.entity.Enum.ContainerStatusEnum;
+import com.example.marinepath.entity.Enum.Container.CargoTypeEnum;
+import com.example.marinepath.entity.Enum.Container.ContainerStatusEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,19 +28,25 @@ public class Container {
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    @ManyToMany(mappedBy = "containers")
-    private Set<PortDocument> portDocuments;
+    @OneToOne
+    @JoinColumn(name = "container_receipt_id", nullable = false)
+    private ContainerReceipt containerReceipt;
 
     @Column(name = "container_code",nullable = false)
-    private Float containerCode;
+    private String containerCode;
 
     @Column(name = "weight",nullable = false)
     private Float weight;
+
+    @Column(name = "container_perator",nullable = false)
+    private String containerOperator;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "cargo_type",nullable = false)
+    private CargoTypeEnum cargoType;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status",nullable = false)
     private ContainerStatusEnum status;
 
-    @Column(name = "is_deleted",nullable = false)
-    private Boolean isDeleted;
 }
