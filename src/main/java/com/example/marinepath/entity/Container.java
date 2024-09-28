@@ -2,6 +2,7 @@ package com.example.marinepath.entity;
 
 import com.example.marinepath.entity.Enum.Container.CargoTypeEnum;
 import com.example.marinepath.entity.Enum.Container.ContainerStatusEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,15 +21,18 @@ public class Container {
     private Integer id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "port_id", nullable = false)
     private Port port;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
     @OneToOne
-    @JoinColumn(name = "container_receipt_id", nullable = false)
+    @JsonIgnore
+    @JoinColumn(name = "container_receipt_id", nullable = true)
     private ContainerReceipt containerReceipt;
 
     @Column(name = "container_code",nullable = false)

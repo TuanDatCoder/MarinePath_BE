@@ -1,6 +1,9 @@
 package com.example.marinepath.entity;
 
 import com.example.marinepath.entity.Enum.Trip.TripStatusEnum;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,13 +24,17 @@ public class Trip {
     private Integer id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "ship_id", nullable = false)
     private Ship ship;
+
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "company_id", nullable = true)
     private Company company;
 

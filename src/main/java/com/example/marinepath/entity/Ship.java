@@ -2,6 +2,7 @@ package com.example.marinepath.entity;
 
 import com.example.marinepath.entity.Enum.Ship.ShipStatusEnum;
 import com.example.marinepath.entity.Enum.Ship.ShipTypeEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import lombok.*;
 import jakarta.persistence.*;
@@ -21,6 +22,7 @@ public class Ship {
     private Integer id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "company_id", nullable = false)
     private Company company;
 

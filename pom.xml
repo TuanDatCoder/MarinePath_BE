@@ -17,8 +17,8 @@
     <groupId>com.example</groupId>
     <artifactId>MarinePath_BE</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>SignInGoogle</name>
-    <description>SignInGoogle</description>
+    <name>MarinePath_BE</name>
+    <description>MarinePath_BE</description>
     <url/>
     <licenses>
         <license/>

@@ -1,6 +1,7 @@
 package com.example.marinepath.entity;
 
 import com.example.marinepath.entity.Enum.IncidentReportStatusEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import lombok.*;
 import jakarta.persistence.*;
@@ -19,6 +20,7 @@ public class IncidentReport {
     private Integer id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "trip_segment_id")
     private TripSegment tripSegment;
 

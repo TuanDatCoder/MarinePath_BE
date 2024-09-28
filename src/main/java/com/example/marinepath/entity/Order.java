@@ -1,6 +1,7 @@
 package com.example.marinepath.entity;
 
 import com.example.marinepath.entity.Enum.OrderStatusEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,10 +22,12 @@ public class Order {
     private Integer id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "trip_id", nullable = false)
     private Trip trip;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
@@ -34,13 +37,13 @@ public class Order {
     @Column(name = "arrival",nullable = false)
     private String arrival;
 
-    @Column(name = "requestDate",nullable = false)
+    @Column(name = "request_date",nullable = false)
     private LocalDateTime requestDate;
 
     @Column(name = "payment_detail",nullable = false)
     private String PaymentDetail;
 
-    @Column(name = "issue_at",nullable = false)
+    @Column(name = "issued_at",nullable = false)
     private LocalDateTime issuedAt;
 
     @Column(name = "expired_at",nullable = false)

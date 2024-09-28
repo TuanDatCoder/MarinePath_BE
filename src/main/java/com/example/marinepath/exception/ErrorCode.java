@@ -28,7 +28,41 @@ public enum ErrorCode {
     EMAIL_WAIT_VERIFY(1101, "This email has been registered and is not verified, please verify and login", HttpStatus.BAD_REQUEST),
     EMAIL_EXISTED(1102, "This email has been registered, please log in!", HttpStatus.BAD_REQUEST),
     SUCCESS(200, "Success",HttpStatus.OK),
-    INTERNAL_ERROR(1200, "Internal Error", HttpStatus.INTERNAL_SERVER_ERROR);
+    INTERNAL_ERROR(1200, "Internal Error", HttpStatus.INTERNAL_SERVER_ERROR),
+
+    // Company | CODE: 12XX
+    COMPANY_NOT_FOUND(1201,"Company not found", HttpStatus.NOT_FOUND),
+
+    // Container | CODE: 13XX
+    CONTAINER_NOT_FOUND(1301,"Container not found", HttpStatus.NOT_FOUND),
+
+    // Container Receipt | CODE: 14XX
+    CONTAINER_RECEIPT_NOT_FOUND(1401,"Container Receipt not found", HttpStatus.NOT_FOUND),
+
+    // Customer | CODE: 15XX
+    CUSTOMER_NOT_FOUND(1501,"Customer not found", HttpStatus.NOT_FOUND),
+
+    // Incident Report| CODE: 16XX
+    INCIDENT_REPORT_NOT_FOUND(1601,"Incident Report not found", HttpStatus.NOT_FOUND),
+
+    // Order | CODE: 17XX
+    ORDER_NOT_FOUND(1701,"Order not found", HttpStatus.NOT_FOUND),
+
+    // Port | CODE: 18XX
+    PORT_NOT_FOUND(1801,"Port not found", HttpStatus.NOT_FOUND),
+
+    // Port Document | CODE: 19XX
+    PORT_DOCUMENT_NOT_FOUND(1901,"Port Document not found", HttpStatus.NOT_FOUND),
+
+    // Ship | CODE: 20XX
+    SHIP_NOT_FOUND(2001,"Ship not found", HttpStatus.NOT_FOUND),
+
+    // Trip | CODE: 21XX
+    TRIP_NOT_FOUND(2101,"Trip not found", HttpStatus.NOT_FOUND),
+    TRIP_DELETED(2102,"Trip is deleted", HttpStatus.NOT_FOUND),
+
+    // Trip Segment | CODE: 22XX
+    TRIP_SEGMENT_NOT_FOUND(2201,"Trip Segment not found", HttpStatus.NOT_FOUND);
 
     private final Integer code;
     @Setter
