@@ -1,9 +1,11 @@
 package com.example.marinepath.dto.Trip;
 
 import com.example.marinepath.entity.Enum.Trip.TripStatusEnum;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
+@Data
 public class TripRequestDTO {
     private Integer shipId;  // ID của tàu
     private Integer accountId; // ID của tài khoản

@@ -4,6 +4,7 @@ import com.example.marinepath.entity.Enum.Account.AccountGenderEnum;
 import com.example.marinepath.entity.Enum.Account.AccountProviderEnum;
 import com.example.marinepath.entity.Enum.Account.AccountRoleEnum;
 import com.example.marinepath.entity.Enum.Account.AccountStatusEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import jakarta.validation.constraints.Email;
@@ -30,7 +31,8 @@ public class Account implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "company_id", nullable = true)
     private Company company;
 

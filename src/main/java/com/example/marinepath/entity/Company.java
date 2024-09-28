@@ -1,13 +1,15 @@
 package com.example.marinepath.entity;
 
 import com.example.marinepath.entity.Enum.CompanyStatusEnum;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,6 +35,7 @@ public class Company {
     private CompanyStatusEnum status;
 
     @OneToMany(mappedBy = "company")
+    @JsonManagedReference
     private List<Account> accounts;
 
     @OneToMany(mappedBy = "company")

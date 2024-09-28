@@ -1,6 +1,7 @@
 package com.example.marinepath.entity;
 
 import com.example.marinepath.entity.Enum.PortDocumentStatusEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import lombok.*;
 import jakarta.persistence.*;
@@ -20,6 +21,7 @@ public class PortDocument {
     private Integer id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "trip_segment_id", nullable = false)
     private TripSegment tripSegment;
 
