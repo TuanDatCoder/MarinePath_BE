@@ -34,6 +34,7 @@ public enum ErrorCode {
 
     // Company | CODE: 12XX
     COMPANY_NOT_FOUND(1201,"Company not found", HttpStatus.NOT_FOUND),
+    COMPANY_DELETED(1202, "This compnay has been deleted.", HttpStatus.GONE),
 
     // Container | CODE: 13XX
     CONTAINER_NOT_FOUND(1301,"Container not found", HttpStatus.NOT_FOUND),
@@ -43,6 +44,7 @@ public enum ErrorCode {
     CONTAINER_RECEIPT_DELETED(1402,"This Container Receipt has been deleted.", HttpStatus.GONE),
     // Customer | CODE: 15XX
     CUSTOMER_NOT_FOUND(1501,"Customer not found", HttpStatus.NOT_FOUND),
+    CUSTOMER_DELETED(1502,"This customer has been deleted.", HttpStatus.GONE),
 
     // Incident Report| CODE: 16XX
     INCIDENT_REPORT_NOT_FOUND(1601,"Incident Report not found", HttpStatus.NOT_FOUND),
