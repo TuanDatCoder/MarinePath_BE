@@ -32,6 +32,7 @@ public enum ErrorCode {
 
     // Company | CODE: 12XX
     COMPANY_NOT_FOUND(1201,"Company not found", HttpStatus.NOT_FOUND),
+    COMPANY_DELETED(1202, "This compnay has been deleted.", HttpStatus.GONE),
 
     // Container | CODE: 13XX
     CONTAINER_NOT_FOUND(1301,"Container not found", HttpStatus.NOT_FOUND),
