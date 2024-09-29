@@ -3,6 +3,7 @@ package com.example.marinepath.service;
 import com.example.marinepath.dto.ApiResponse;
 import com.example.marinepath.dto.TripSegment.TripSegmentRequestDTO;
 import com.example.marinepath.dto.TripSegment.TripSegmentResponseDTO;
+import com.example.marinepath.dto.TripSegment.TripSegmentUpdateRequestDTO;
 import com.example.marinepath.entity.Enum.TripSegmentStatusEnum;
 import com.example.marinepath.entity.Port;
 import com.example.marinepath.entity.Trip;
@@ -53,7 +54,7 @@ public class TripSegmentService {
             tripSegment.setEndPort(endPort);
             tripSegment.setStartDate(tripSegmentRequestDTO.getStartDate());
             tripSegment.setEndDate(tripSegmentRequestDTO.getEndDate());
-            tripSegment.setStatus(tripSegmentRequestDTO.getStatus());
+            tripSegment.setStatus(TripSegmentStatusEnum.PENDING);
 
             TripSegment savedTripSegment = tripSegmentRepository.save(tripSegment);
             TripSegmentResponseDTO responseDTO = convertToDto(savedTripSegment);
@@ -65,7 +66,7 @@ public class TripSegmentService {
         }
     }
 
-    public ApiResponse<TripSegmentResponseDTO> updateTripSegment(Integer id, TripSegmentRequestDTO tripSegmentRequestDTO) {
+    public ApiResponse<TripSegmentResponseDTO> updateTripSegment(Integer id, TripSegmentUpdateRequestDTO tripSegmentUpdateRequestDTO) {
         try {
 
             TripSegment existingTripSegment = tripSegmentRepository.findById(id)
@@ -75,21 +76,21 @@ public class TripSegmentService {
                 throw new ApiException(ErrorCode.TRIP_SEGMENT_DELETED);
             }
 
-            Trip trip = tripRepository.findById(tripSegmentRequestDTO.getTripId())
+            Trip trip = tripRepository.findById(tripSegmentUpdateRequestDTO.getTripId())
                     .orElseThrow(() -> new ApiException(ErrorCode.TRIP_NOT_FOUND));
 
-            Port startPort = portRepository.findById(tripSegmentRequestDTO.getStartPortId())
+            Port startPort = portRepository.findById(tripSegmentUpdateRequestDTO.getStartPortId())
                     .orElseThrow(() -> new ApiException(ErrorCode.PORT_NOT_FOUND));
 
-            Port endPort = portRepository.findById(tripSegmentRequestDTO.getEndPortId())
+            Port endPort = portRepository.findById(tripSegmentUpdateRequestDTO.getEndPortId())
                     .orElseThrow(() -> new ApiException(ErrorCode.PORT_NOT_FOUND));
 
             existingTripSegment.setTrip(trip);
             existingTripSegment.setStartPort(startPort);
             existingTripSegment.setEndPort(endPort);
-            existingTripSegment.setStartDate(tripSegmentRequestDTO.getStartDate());
-            existingTripSegment.setEndDate(tripSegmentRequestDTO.getEndDate());
-            existingTripSegment.setStatus(tripSegmentRequestDTO.getStatus());
+            existingTripSegment.setStartDate(tripSegmentUpdateRequestDTO.getStartDate());
+            existingTripSegment.setEndDate(tripSegmentUpdateRequestDTO.getEndDate());
+            existingTripSegment.setStatus(tripSegmentUpdateRequestDTO.getStatus());
 
             TripSegment updatedTripSegment = tripSegmentRepository.save(existingTripSegment);
             TripSegmentResponseDTO responseDTO = convertToDto(updatedTripSegment);
