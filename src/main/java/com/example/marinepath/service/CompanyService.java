@@ -70,12 +70,6 @@ public class CompanyService {
         }
     }
 
-    private CompanyResponseDTO convertToDto(Company company) {
-        CompanyResponseDTO responseDTO = new CompanyResponseDTO();
-        responseDTO = objectMapper.convertValue(company, CompanyResponseDTO.class);
-        return responseDTO;
-    }
-
     //Update company
     public ApiResponse<CompanyResponseDTO> updateCompany(Integer id, CompanyRequestDTO companyRequestDTO) {
         try {
@@ -109,5 +103,11 @@ public class CompanyService {
         } catch (Exception e) {
             return new ApiResponse<>(500, "Error deleting company: " + e.getMessage(), null);
         }
+    }
+
+    private CompanyResponseDTO convertToDto(Company company) {
+        CompanyResponseDTO responseDTO = new CompanyResponseDTO();
+        responseDTO = objectMapper.convertValue(company, CompanyResponseDTO.class);
+        return responseDTO;
     }
 }
