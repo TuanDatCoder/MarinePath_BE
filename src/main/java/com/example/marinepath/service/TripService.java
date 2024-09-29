@@ -3,6 +3,7 @@ package com.example.marinepath.service;
 import com.example.marinepath.dto.ApiResponse;
 import com.example.marinepath.dto.Trip.TripRequestDTO;
 import com.example.marinepath.dto.Trip.TripResponseDTO;
+import com.example.marinepath.dto.Trip.TripUpdateRequestDTO;
 import com.example.marinepath.entity.Account;
 import com.example.marinepath.entity.Company;
 import com.example.marinepath.entity.Enum.TripStatusEnum;
@@ -61,7 +62,7 @@ public class TripService {
             trip.setContainerCount(tripRequestDTO.getContainerCount());
             trip.setStartDate(tripRequestDTO.getStartDate());
             trip.setEndDate(tripRequestDTO.getEndDate());
-            trip.setStatus(tripRequestDTO.getStatus());
+            trip.setStatus(TripStatusEnum.SCHEDULED);
             trip.setCreatedAt(LocalDateTime.now());
             trip.setUpdatedAt(LocalDateTime.now());
 
@@ -76,31 +77,31 @@ public class TripService {
     }
 
 
-    public ApiResponse<TripResponseDTO> updateTrip(Integer id, TripRequestDTO tripRequestDTO) {
+    public ApiResponse<TripResponseDTO> updateTrip(Integer id, TripUpdateRequestDTO tripUpdateRequestDTO) {
         try {
             Trip existingTrip = tripRepository.findById(id)
                     .orElseThrow(() -> new ApiException(ErrorCode.TRIP_NOT_FOUND));
             if (existingTrip.getStatus() == TripStatusEnum.DELETED) {
                 throw new ApiException(ErrorCode.TRIP_DELETED);
             }
-            Ship ship = shipRepository.findById(tripRequestDTO.getShipId())
+            Ship ship = shipRepository.findById(tripUpdateRequestDTO.getShipId())
                         .orElseThrow(() -> new ApiException(ErrorCode.SHIP_NOT_FOUND));
                 existingTrip.setShip(ship);
 
-            Account account = accountRepository.findById(tripRequestDTO.getAccountId())
+            Account account = accountRepository.findById(tripUpdateRequestDTO.getAccountId())
                         .orElseThrow(() -> new ApiException(ErrorCode.ACCOUNT_NOT_FOUND));
                 existingTrip.setAccount(account);
 
-            Company company = companyRepository.findById(tripRequestDTO.getCompanyId())
+            Company company = companyRepository.findById(tripUpdateRequestDTO.getCompanyId())
                         .orElseThrow(() -> new ApiException(ErrorCode.COMPANY_NOT_FOUND));
                 existingTrip.setCompany(company);
 
-            existingTrip.setWeight(tripRequestDTO.getWeight());
-            existingTrip.setDescription(tripRequestDTO.getDescription());
-            existingTrip.setContainerCount(tripRequestDTO.getContainerCount());
-            existingTrip.setStartDate(tripRequestDTO.getStartDate());
-            existingTrip.setEndDate(tripRequestDTO.getEndDate());
-            existingTrip.setStatus(tripRequestDTO.getStatus());
+            existingTrip.setWeight(tripUpdateRequestDTO.getWeight());
+            existingTrip.setDescription(tripUpdateRequestDTO.getDescription());
+            existingTrip.setContainerCount(tripUpdateRequestDTO.getContainerCount());
+            existingTrip.setStartDate(tripUpdateRequestDTO.getStartDate());
+            existingTrip.setEndDate(tripUpdateRequestDTO.getEndDate());
+            existingTrip.setStatus(tripUpdateRequestDTO.getStatus());
             existingTrip.setUpdatedAt(LocalDateTime.now());
 
             Trip updatedTrip = tripRepository.save(existingTrip);
