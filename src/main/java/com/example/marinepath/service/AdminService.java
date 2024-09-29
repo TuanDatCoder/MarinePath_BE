@@ -22,13 +22,25 @@ public class AdminService {
     private ObjectMapper objectMapper;
 
     public ApiResponse<List<AccountResponseDTO>> getAllAccounts() {
-        List<Account> accounts = accountRepository.findAll();
-        List<AccountResponseDTO> accountDtos = accounts.stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-        return new ApiResponse<>(HttpStatus.OK.value(), "Success", accountDtos);
+        try {
+            List<Account> accounts = accountRepository.findAll();
+            List<AccountResponseDTO> responseDTOs = accounts.stream()
+                    .map(this::convertToDto)
+                    .collect(Collectors.toList());
+            return new ApiResponse<>(200, "Accounts retrieved successfully", responseDTOs);
+        } catch (Exception e) {
+            return new ApiResponse<>(500, "Error retrieving accounts: " + e.getMessage(), null);
+        }
     }
+
+
     private AccountResponseDTO convertToDto(Account account) {
-        return objectMapper.convertValue(account, AccountResponseDTO.class);
+        AccountResponseDTO responseDTO = objectMapper.convertValue(account, AccountResponseDTO.class);
+
+        if (account.getCompany()!=null) responseDTO.setCompanyId(account.getCompany().getId());
+
+        return responseDTO;
     }
+
+
 }
