@@ -2,6 +2,7 @@ package com.example.marinepath.service;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.example.marinepath.dto.Account.AccountResponseDTO;
+import com.example.marinepath.dto.Account.AccountUpdateResponseDTO;
 import com.example.marinepath.dto.ApiResponse;
 import com.example.marinepath.dto.Auth.Login.LoginRequestDTO;
 import com.example.marinepath.dto.Auth.Login.LoginResponseDTO;
@@ -9,6 +10,7 @@ import com.example.marinepath.dto.Auth.Register.RegisterRequestDTO;
 import com.example.marinepath.entity.Account;
 import com.example.marinepath.entity.Enum.Account.AccountProviderEnum;
 import com.example.marinepath.entity.Enum.Account.AccountStatusEnum;
+import com.example.marinepath.entity.Enum.OrderStatusEnum;
 import com.example.marinepath.exception.ApiException;
 import com.example.marinepath.exception.ErrorCode;
 import com.example.marinepath.exception.Token.InvalidToken;
@@ -27,6 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class AccountService {
@@ -183,7 +186,82 @@ public class AccountService {
             return new ApiResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage(), null);
         }
     }
+
+
+
+    public ApiResponse<AccountResponseDTO> updateAccount(Integer id, AccountUpdateResponseDTO accountUpdateResponseDTO) {
+        try {
+            Account account = accountRepository.findById(id)
+                    .orElseThrow(() -> new ApiException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+            if (account.getStatus() == AccountStatusEnum.DELETED) {
+                throw new ApiException(ErrorCode.ACCOUNT_DELETED);
+            }
+
+            account.setEmail(accountUpdateResponseDTO.getEmail());
+            account.setName(accountUpdateResponseDTO.getName());
+            account.setGender(accountUpdateResponseDTO.getGender());
+            account.setPicture(accountUpdateResponseDTO.getPicture());
+            account.setStatus(accountUpdateResponseDTO.getStatus());
+
+            Account updatedAccount = accountRepository.save(account);
+            AccountResponseDTO responseDTO = convertToDto(updatedAccount);
+            return new ApiResponse<>(200, "Account updated successfully", responseDTO);
+        } catch (ApiException e) {
+            return new ApiResponse<>(e.getErrorCode().getHttpStatus().value(), e.getErrorCode().getMessage(), null);
+        } catch (Exception e) {
+            return new ApiResponse<>(500, "Error updating account: " + e.getMessage(), null);
+        }
+    }
+
+    public ApiResponse<Void> deleteAccount(Integer id) {
+        try {
+            accountRepository.findById(id)
+                    .orElseThrow(() -> new ApiException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+            accountRepository.deleteById(id);
+            return new ApiResponse<>(204, "Account deleted successfully", null);
+        } catch (Exception e) {
+            return new ApiResponse<>(500, "Error deleting account: " + e.getMessage(), null);
+        }
+    }
+
+    public ApiResponse<AccountResponseDTO> getAccountById(Integer id) {
+        try {
+            Account account = accountRepository.findById(id)
+                    .orElseThrow(() -> new ApiException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+            if (account.getStatus() == AccountStatusEnum.DELETED) {
+                throw new ApiException(ErrorCode.ACCOUNT_DELETED);
+            }
+            AccountResponseDTO responseDTO = convertToDto(account);
+            return new ApiResponse<>(200, "Account found", responseDTO);
+        } catch (Exception e) {
+            return new ApiResponse<>(500, "Error retrieving account: " + e.getMessage(), null);
+        }
+    }
+
+    public ApiResponse<AccountResponseDTO> getAccountByEmail2(String email) {
+        try {
+            Account account = accountRepository.findByEmail(email)
+                    .orElseThrow(() -> new ApiException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+            if (account.getStatus() == AccountStatusEnum.DELETED) {
+                throw new ApiException(ErrorCode.ACCOUNT_DELETED);
+            }
+            AccountResponseDTO responseDTO = convertToDto(account);
+            return new ApiResponse<>(200, "Account found", responseDTO);
+        } catch (Exception e) {
+            return new ApiResponse<>(500, "Error retrieving account by email: " + e.getMessage(), null);
+        }
+    }
+
+
     private AccountResponseDTO convertToDto(Account account) {
-        return objectMapper.convertValue(account, AccountResponseDTO.class);
+        AccountResponseDTO responseDTO = objectMapper.convertValue(account, AccountResponseDTO.class);
+
+        if (account.getCompany()!=null) responseDTO.setCompanyId(account.getCompany().getId());
+
+        return responseDTO;
     }
 }
