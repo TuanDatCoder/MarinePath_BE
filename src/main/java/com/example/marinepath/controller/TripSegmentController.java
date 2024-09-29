@@ -3,6 +3,7 @@ package com.example.marinepath.controller;
 
 import com.example.marinepath.dto.TripSegment.TripSegmentRequestDTO;
 import com.example.marinepath.dto.TripSegment.TripSegmentResponseDTO;
+import com.example.marinepath.dto.TripSegment.TripSegmentUpdateRequestDTO;
 import com.example.marinepath.service.TripSegmentService;
 import com.example.marinepath.dto.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,8 @@ public class TripSegmentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<TripSegmentResponseDTO>> updateTripSegment(@PathVariable Integer id, @RequestBody TripSegmentRequestDTO tripSegmentRequestDTO) {
-        ApiResponse<TripSegmentResponseDTO> response = tripSegmentService.updateTripSegment(id, tripSegmentRequestDTO);
+    public ResponseEntity<ApiResponse<TripSegmentResponseDTO>> updateTripSegment(@PathVariable Integer id, @RequestBody TripSegmentUpdateRequestDTO tripSegmentUpdateRequestDTO) {
+        ApiResponse<TripSegmentResponseDTO> response = tripSegmentService.updateTripSegment(id, tripSegmentUpdateRequestDTO);
         return ResponseEntity.status(response.getCode()).body(response);
     }
 

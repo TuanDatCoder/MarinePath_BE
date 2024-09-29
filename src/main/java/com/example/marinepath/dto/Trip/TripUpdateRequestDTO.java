@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class TripRequestDTO {
+public class TripUpdateRequestDTO {
     private Integer shipId;
     private Integer accountId;
     private Integer companyId;
@@ -15,5 +15,6 @@ public class TripRequestDTO {
     private Integer containerCount;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private TripStatusEnum status;
 
 }

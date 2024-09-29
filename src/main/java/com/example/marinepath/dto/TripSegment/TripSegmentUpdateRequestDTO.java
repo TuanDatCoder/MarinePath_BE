@@ -10,10 +10,11 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TripSegmentRequestDTO {
+public class TripSegmentUpdateRequestDTO {
     private Integer tripId;
     private Integer startPortId;
     private Integer endPortId;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private TripSegmentStatusEnum status;
 }

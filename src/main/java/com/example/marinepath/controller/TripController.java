@@ -2,6 +2,7 @@ package com.example.marinepath.controller;
 
 import com.example.marinepath.dto.Trip.TripRequestDTO;
 import com.example.marinepath.dto.Trip.TripResponseDTO;
+import com.example.marinepath.dto.Trip.TripUpdateRequestDTO;
 import com.example.marinepath.service.TripService;
 import org.springframework.web.bind.annotation.*;
 import com.example.marinepath.dto.ApiResponse;
@@ -24,8 +25,8 @@ public class TripController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<TripResponseDTO>> updateTrip(@PathVariable Integer id, @RequestBody TripRequestDTO tripRequestDTO) {
-        ApiResponse<TripResponseDTO> response = tripService.updateTrip(id, tripRequestDTO);
+    public ResponseEntity<ApiResponse<TripResponseDTO>> updateTrip(@PathVariable Integer id, @RequestBody TripUpdateRequestDTO tripUpdateRequestDTO) {
+        ApiResponse<TripResponseDTO> response = tripService.updateTrip(id, tripUpdateRequestDTO);
         return ResponseEntity.status(response.getCode()).body(response);
     }
 
