@@ -5,7 +5,7 @@ import com.example.marinepath.dto.Trip.TripRequestDTO;
 import com.example.marinepath.dto.Trip.TripResponseDTO;
 import com.example.marinepath.entity.Account;
 import com.example.marinepath.entity.Company;
-import com.example.marinepath.entity.Enum.Trip.TripStatusEnum;
+import com.example.marinepath.entity.Enum.TripStatusEnum;
 import com.example.marinepath.entity.Ship;
 import com.example.marinepath.exception.ApiException;
 import com.example.marinepath.exception.ErrorCode;

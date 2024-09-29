@@ -1,6 +1,6 @@
 package com.example.marinepath.entity;
 
-import com.example.marinepath.entity.Enum.Trip.TripSegmentStatusEnum;
+import com.example.marinepath.entity.Enum.TripSegmentStatusEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
