@@ -79,32 +79,32 @@ public class TripService {
 
     public ApiResponse<TripResponseDTO> updateTrip(Integer id, TripUpdateRequestDTO tripUpdateRequestDTO) {
         try {
-            Trip existingTrip = tripRepository.findById(id)
+            Trip trip = tripRepository.findById(id)
                     .orElseThrow(() -> new ApiException(ErrorCode.TRIP_NOT_FOUND));
-            if (existingTrip.getStatus() == TripStatusEnum.DELETED) {
+            if (trip.getStatus() == TripStatusEnum.DELETED) {
                 throw new ApiException(ErrorCode.TRIP_DELETED);
             }
             Ship ship = shipRepository.findById(tripUpdateRequestDTO.getShipId())
                         .orElseThrow(() -> new ApiException(ErrorCode.SHIP_NOT_FOUND));
-                existingTrip.setShip(ship);
+                trip.setShip(ship);
 
             Account account = accountRepository.findById(tripUpdateRequestDTO.getAccountId())
                         .orElseThrow(() -> new ApiException(ErrorCode.ACCOUNT_NOT_FOUND));
-                existingTrip.setAccount(account);
+                trip.setAccount(account);
 
             Company company = companyRepository.findById(tripUpdateRequestDTO.getCompanyId())
                         .orElseThrow(() -> new ApiException(ErrorCode.COMPANY_NOT_FOUND));
-                existingTrip.setCompany(company);
+                trip.setCompany(company);
 
-            existingTrip.setWeight(tripUpdateRequestDTO.getWeight());
-            existingTrip.setDescription(tripUpdateRequestDTO.getDescription());
-            existingTrip.setContainerCount(tripUpdateRequestDTO.getContainerCount());
-            existingTrip.setStartDate(tripUpdateRequestDTO.getStartDate());
-            existingTrip.setEndDate(tripUpdateRequestDTO.getEndDate());
-            existingTrip.setStatus(tripUpdateRequestDTO.getStatus());
-            existingTrip.setUpdatedAt(LocalDateTime.now());
+            trip.setWeight(tripUpdateRequestDTO.getWeight());
+            trip.setDescription(tripUpdateRequestDTO.getDescription());
+            trip.setContainerCount(tripUpdateRequestDTO.getContainerCount());
+            trip.setStartDate(tripUpdateRequestDTO.getStartDate());
+            trip.setEndDate(tripUpdateRequestDTO.getEndDate());
+            trip.setStatus(tripUpdateRequestDTO.getStatus());
+            trip.setUpdatedAt(LocalDateTime.now());
 
-            Trip updatedTrip = tripRepository.save(existingTrip);
+            Trip updatedTrip = tripRepository.save(trip);
             TripResponseDTO responseDTO = convertToDto(updatedTrip);
             return new ApiResponse<>(200, "Trip updated successfully", responseDTO);
         } catch (ApiException e) {
