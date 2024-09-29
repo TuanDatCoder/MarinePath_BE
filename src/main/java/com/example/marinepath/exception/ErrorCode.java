@@ -36,9 +36,11 @@ public enum ErrorCode {
 
     // Container | CODE: 13XX
     CONTAINER_NOT_FOUND(1301,"Container not found", HttpStatus.NOT_FOUND),
+    CONTAINER_DELETED(1302,"This container has been deleted.", HttpStatus.GONE),
 
     // Container Receipt | CODE: 14XX
     CONTAINER_RECEIPT_NOT_FOUND(1401,"Container Receipt not found", HttpStatus.NOT_FOUND),
+    CONTAINER_RECEIPT_DELETED(1402,"This Container Receipt has been deleted.", HttpStatus.GONE),
 
     // Customer | CODE: 15XX
     CUSTOMER_NOT_FOUND(1501,"Customer not found", HttpStatus.NOT_FOUND),
