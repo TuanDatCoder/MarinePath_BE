@@ -2,7 +2,7 @@ package com.example.marinepath.utils;
 
 
 import com.example.marinepath.entity.Account;
-import com.example.marinepath.exception.Account.AccountException;
+import com.example.marinepath.exception.ApiException;
 import com.example.marinepath.exception.ErrorCode;
 import com.example.marinepath.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +21,9 @@ public class AccountUtils {
         if (principal instanceof UserDetails) {
             String email = ((UserDetails) principal).getUsername();
             return accountRepository.findByEmail(email)
-                    .orElseThrow(() -> new AccountException("Account not found with email: " + email, ErrorCode.USER_NOT_FOUND));
+                    .orElseThrow(() -> new ApiException("Account not found with email: " + email, ErrorCode.USER_NOT_FOUND));
         } else {
-            throw new AccountException("User not authenticated", ErrorCode.UNAUTHORIZED);
+            throw new ApiException("User not authenticated", ErrorCode.UNAUTHORIZED);
         }
     }
 }
