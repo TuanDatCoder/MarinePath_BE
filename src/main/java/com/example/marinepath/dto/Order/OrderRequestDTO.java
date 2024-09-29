@@ -15,7 +15,6 @@ public class OrderRequestDTO {
     private Integer customerId;
     private String departure;
     private String arrival;
-    private LocalDateTime requestDate;
     private String paymentDetail;
     private LocalDateTime issuedAt;
     private LocalDateTime expiredAt;

@@ -69,10 +69,10 @@ public class TripSegmentService {
     public ApiResponse<TripSegmentResponseDTO> updateTripSegment(Integer id, TripSegmentUpdateRequestDTO tripSegmentUpdateRequestDTO) {
         try {
 
-            TripSegment existingTripSegment = tripSegmentRepository.findById(id)
+            TripSegment tripSegment = tripSegmentRepository.findById(id)
                     .orElseThrow(() -> new ApiException(ErrorCode.TRIP_SEGMENT_NOT_FOUND));
 
-            if (existingTripSegment.getStatus() == TripSegmentStatusEnum.DELETED) {
+            if (tripSegment.getStatus() == TripSegmentStatusEnum.DELETED) {
                 throw new ApiException(ErrorCode.TRIP_SEGMENT_DELETED);
             }
 
@@ -85,14 +85,14 @@ public class TripSegmentService {
             Port endPort = portRepository.findById(tripSegmentUpdateRequestDTO.getEndPortId())
                     .orElseThrow(() -> new ApiException(ErrorCode.PORT_NOT_FOUND));
 
-            existingTripSegment.setTrip(trip);
-            existingTripSegment.setStartPort(startPort);
-            existingTripSegment.setEndPort(endPort);
-            existingTripSegment.setStartDate(tripSegmentUpdateRequestDTO.getStartDate());
-            existingTripSegment.setEndDate(tripSegmentUpdateRequestDTO.getEndDate());
-            existingTripSegment.setStatus(tripSegmentUpdateRequestDTO.getStatus());
+            tripSegment.setTrip(trip);
+            tripSegment.setStartPort(startPort);
+            tripSegment.setEndPort(endPort);
+            tripSegment.setStartDate(tripSegmentUpdateRequestDTO.getStartDate());
+            tripSegment.setEndDate(tripSegmentUpdateRequestDTO.getEndDate());
+            tripSegment.setStatus(tripSegmentUpdateRequestDTO.getStatus());
 
-            TripSegment updatedTripSegment = tripSegmentRepository.save(existingTripSegment);
+            TripSegment updatedTripSegment = tripSegmentRepository.save(tripSegment);
             TripSegmentResponseDTO responseDTO = convertToDto(updatedTripSegment);
             return new ApiResponse<>(200, "TripSegment updated successfully", responseDTO);
         } catch (ApiException e) {

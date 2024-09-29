@@ -19,6 +19,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +52,7 @@ public class OrderService {
             order.setCustomer(customer);
             order.setDeparture(orderRequestDTO.getDeparture());
             order.setArrival(orderRequestDTO.getArrival());
-            order.setRequestDate(orderRequestDTO.getRequestDate());
+            order.setRequestDate(LocalDateTime.now());
             order.setPaymentDetail(orderRequestDTO.getPaymentDetail());
             order.setIssuedAt(orderRequestDTO.getIssuedAt());
             order.setExpiredAt(orderRequestDTO.getExpiredAt());
@@ -69,10 +70,10 @@ public class OrderService {
 
     public ApiResponse<OrderResponseDTO> updateOrder(Integer id, OrderUpdateRequestDTO orderUpdateRequestDTO) {
         try {
-            Order existingOrder = orderRepository.findById(id)
+            Order order = orderRepository.findById(id)
                     .orElseThrow(() -> new ApiException(ErrorCode.ORDER_NOT_FOUND));
 
-            if (existingOrder.getStatus() == OrderStatusEnum.DELETED) {
+            if (order.getStatus() == OrderStatusEnum.DELETED) {
                 throw new ApiException(ErrorCode.ORDER_DELETED);
             }
 
@@ -82,17 +83,16 @@ public class OrderService {
             Customer customer = customerRepository.findById(orderUpdateRequestDTO.getCustomerId())
                     .orElseThrow(() -> new ApiException(ErrorCode.CUSTOMER_NOT_FOUND));
 
-            existingOrder.setTrip(trip);
-            existingOrder.setCustomer(customer);
-            existingOrder.setDeparture(orderUpdateRequestDTO.getDeparture());
-            existingOrder.setArrival(orderUpdateRequestDTO.getArrival());
-            existingOrder.setRequestDate(orderUpdateRequestDTO.getRequestDate());
-            existingOrder.setPaymentDetail(orderUpdateRequestDTO.getPaymentDetail());
-            existingOrder.setIssuedAt(orderUpdateRequestDTO.getIssuedAt());
-            existingOrder.setExpiredAt(orderUpdateRequestDTO.getExpiredAt());
-            existingOrder.setStatus(orderUpdateRequestDTO.getStatus());
+            order.setTrip(trip);
+            order.setCustomer(customer);
+            order.setDeparture(orderUpdateRequestDTO.getDeparture());
+            order.setArrival(orderUpdateRequestDTO.getArrival());
+            order.setPaymentDetail(orderUpdateRequestDTO.getPaymentDetail());
+            order.setIssuedAt(orderUpdateRequestDTO.getIssuedAt());
+            order.setExpiredAt(orderUpdateRequestDTO.getExpiredAt());
+            order.setStatus(orderUpdateRequestDTO.getStatus());
 
-            Order updatedOrder = orderRepository.save(existingOrder);
+            Order updatedOrder = orderRepository.save(order);
             OrderResponseDTO responseDTO = convertToDto(updatedOrder);
             return new ApiResponse<>(200, "Order updated successfully", responseDTO);
         } catch (ApiException e) {

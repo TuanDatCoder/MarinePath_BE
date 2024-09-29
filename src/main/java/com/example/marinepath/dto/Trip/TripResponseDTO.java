@@ -9,14 +9,8 @@ import java.time.LocalDateTime;
 @Data
 public class TripResponseDTO {
     private Integer id;
-
-    @JsonProperty("shipId")
     private Integer shipId;
-
-    @JsonProperty("accountId")
     private Integer accountId;
-
-    @JsonProperty("companyId")
     private Integer companyId;
 
     private Float weight;
