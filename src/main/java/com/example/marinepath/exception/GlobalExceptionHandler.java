@@ -8,14 +8,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.example.marinepath.exception.Account.AccountException;
-
 import org.springframework.security.access.AccessDeniedException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(value = AccountException.class)
-    ResponseEntity<ApiResponse> handlingAccountAppException(AccountException exception) {
+    @ExceptionHandler(value = ApiException.class)
+    ResponseEntity<ApiResponse> handlingAccountAppException(ApiException exception) {
         ErrorCode errorCode = exception.getErrorCode();
 
         ApiResponse apiResponse = new ApiResponse();

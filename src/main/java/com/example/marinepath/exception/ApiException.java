@@ -1,6 +1,6 @@
 package com.example.marinepath.exception;
 
-
+import com.example.marinepath.exception.ErrorCode;
 import lombok.Getter;
 
 @Getter
@@ -13,8 +13,7 @@ public class ApiException extends RuntimeException {
     }
 
     public ApiException(ErrorCode errorCode) {
-        super(errorCode.getMessage()); // Lấy message từ ErrorCode
+        super(errorCode.getMessage());
         this.errorCode = errorCode;
     }
 }
-

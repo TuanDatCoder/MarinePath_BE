@@ -9,7 +9,7 @@ import com.example.marinepath.dto.Auth.Register.RegisterRequestDTO;
 import com.example.marinepath.entity.Account;
 import com.example.marinepath.entity.Enum.Account.AccountProviderEnum;
 import com.example.marinepath.entity.Enum.Account.AccountStatusEnum;
-import com.example.marinepath.exception.Account.AccountException;
+import com.example.marinepath.exception.ApiException;
 import com.example.marinepath.exception.ErrorCode;
 import com.example.marinepath.exception.Token.InvalidToken;
 import com.example.marinepath.repository.AccountRepository;
@@ -57,7 +57,7 @@ public class AccountService {
 
     public ApiResponse<String> registerNewAccount(RegisterRequestDTO registerRequestDTO) {
         if (accountRepository.findByEmail(registerRequestDTO.getEmail()).isPresent()) {
-            throw new AccountException("User existed", ErrorCode.USER_EXISTED);
+            throw new ApiException("User existed", ErrorCode.USER_EXISTED);
         }
 
         Account account = new Account();
@@ -84,9 +84,9 @@ public class AccountService {
             verifyAccountByEmail(email);
             return new ApiResponse<>(200, "Account verification successful.", null);
         } catch (InvalidToken | TokenExpiredException e) {
-            throw new AccountException("Invalid token", ErrorCode.TOKEN_INVALID);
+            throw new ApiException("Invalid token", ErrorCode.TOKEN_INVALID);
         } catch (Exception e) {
-            throw new AccountException("Error verifying account: " + e.getMessage(), ErrorCode.INTERNAL_ERROR);
+            throw new ApiException("Error verifying account: " + e.getMessage(), ErrorCode.INTERNAL_ERROR);
         }
     }
 
@@ -99,12 +99,12 @@ public class AccountService {
                 accountRepository.save(account);
             }
         } else {
-            throw new AccountException("Account not found", ErrorCode.ACCOUNT_NOT_FOUND);
+            throw new ApiException("Account not found", ErrorCode.ACCOUNT_NOT_FOUND);
         }
     }
     public ApiResponse<String> requestPasswordReset(String email) {
         Account account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new AccountException("User not found with email: " + email, ErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new ApiException("User not found with email: " + email, ErrorCode.USER_NOT_FOUND));
 
         String resetToken = jwtTokenUtil.generateToken(new org.springframework.security.core.userdetails.User(email, "", new ArrayList<>()));
         String resetLink = "http://localhost:8080/auth/reset-password?token=" + resetToken;
@@ -117,15 +117,15 @@ public class AccountService {
         try {
             String email = jwtTokenUtil.getEmailFromToken(token);
             Account account = accountRepository.findByEmail(email)
-                    .orElseThrow(() -> new AccountException("User not found with email: " + email, ErrorCode.USER_NOT_FOUND));
+                    .orElseThrow(() -> new ApiException("User not found with email: " + email, ErrorCode.USER_NOT_FOUND));
 
             account.setPassword(passwordEncoder.encode(newPassword));
             accountRepository.save(account);
             return new ApiResponse<>(200, "Password reset successful.", null);
         } catch (InvalidToken | TokenExpiredException e) {
-            throw new AccountException("Invalid or expired token", ErrorCode.TOKEN_INVALID);
+            throw new ApiException("Invalid or expired token", ErrorCode.TOKEN_INVALID);
         } catch (Exception e) {
-            throw new AccountException("Error resetting password: " + e.getMessage(), ErrorCode.INTERNAL_ERROR);
+            throw new ApiException("Error resetting password: " + e.getMessage(), ErrorCode.INTERNAL_ERROR);
         }
     }
 
@@ -137,7 +137,7 @@ public class AccountService {
 
     public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
         Account account = accountRepository.findByEmail(loginRequestDTO.getEmail())
-                .orElseThrow(() -> new AccountException("User not found with email: " + loginRequestDTO.getEmail(), ErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new ApiException("User not found with email: " + loginRequestDTO.getEmail(), ErrorCode.USER_NOT_FOUND));
 
         if (account.getProvider() != AccountProviderEnum.LOCAL) {
             return new LoginResponseDTO("Please log in using Google", null, null, null);
@@ -153,7 +153,7 @@ public class AccountService {
             String refreshToken = jwtTokenUtil.generateRefreshToken(userDetails);
             return new LoginResponseDTO("Login successful", null, accessToken, refreshToken);
         } catch (BadCredentialsException e) {
-            throw new AccountException("Invalid email or password", ErrorCode.USERNAME_PASSWORD_NOT_CORRECT);
+            throw new ApiException("Invalid email or password", ErrorCode.USERNAME_PASSWORD_NOT_CORRECT);
         }
     }
 
@@ -177,7 +177,7 @@ public class AccountService {
 
             return new ApiResponse<>(HttpStatus.OK.value(), "Account retrieved successfully", accountResponseDTO);
 
-        } catch (AccountException e) {
+        } catch (ApiException e) {
             return new ApiResponse<>(e.getErrorCode().getHttpStatus().value(), e.getMessage(), null);
         } catch (Exception e) {
             return new ApiResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage(), null);
