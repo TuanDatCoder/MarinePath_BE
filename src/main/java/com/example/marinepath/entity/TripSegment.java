@@ -1,6 +1,7 @@
 package com.example.marinepath.entity;
 
-import com.example.marinepath.entity.Enum.Trip.TripSegmentStatusEnum;
+import com.example.marinepath.entity.Enum.TripSegmentStatusEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -22,14 +22,17 @@ public class TripSegment {
     private Integer id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "trip_id", nullable = false)
     private Trip trip;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "start_port_id", nullable = false)
     private Port startPort;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "end_port_id", nullable = false)
     private Port endPort;
 
@@ -43,9 +46,9 @@ public class TripSegment {
     @Column(name = "status", nullable = false)
     private TripSegmentStatusEnum status;
 
-    @OneToMany(mappedBy = "tripSegment") // Đổi thành tripSegment
+    @OneToMany(mappedBy = "tripSegment")
     private List<IncidentReport> incidentReports;
 
-    @OneToMany(mappedBy = "tripSegment") // Đổi thành tripSegment
+    @OneToMany(mappedBy = "tripSegment")
     private List<PortDocument> portDocuments;
 }
