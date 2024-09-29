@@ -57,6 +57,7 @@ public enum ErrorCode {
 
     // Ship | CODE: 20XX
     SHIP_NOT_FOUND(2001,"Ship not found", HttpStatus.NOT_FOUND),
+    SHIP_DELETED(2102,"Ship is deleted", HttpStatus.NOT_FOUND),
 
     // Trip | CODE: 21XX
     TRIP_NOT_FOUND(2101,"Trip not found", HttpStatus.NOT_FOUND),
