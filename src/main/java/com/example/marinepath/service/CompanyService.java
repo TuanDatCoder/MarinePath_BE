@@ -24,6 +24,8 @@ public class CompanyService {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    //create company
     public ApiResponse<CompanyResponseDTO> createCompany(CompanyRequestDTO companyRequestDTO) {
         try {
             Company company = new Company();
@@ -40,6 +42,7 @@ public class CompanyService {
         }
     }
 
+    //View all Companies
     public ApiResponse<List<CompanyResponseDTO>> getAllCompanies() {
         try {
             List<Company> companies = companyRepository.findByStatusNot(CompanyStatusEnum.DELETED);
@@ -52,6 +55,7 @@ public class CompanyService {
         }
     }
 
+    //View details
     public ApiResponse<CompanyResponseDTO> getCompanyById(Integer id) {
         try {
             Company company  = companyRepository.findById(id)
@@ -72,6 +76,7 @@ public class CompanyService {
         return responseDTO;
     }
 
+    //Update company
     public ApiResponse<CompanyResponseDTO> updateCompany(Integer id, CompanyRequestDTO companyRequestDTO) {
         try {
             Company existingCompany = companyRepository.findById(id)
@@ -94,6 +99,7 @@ public class CompanyService {
         }
     }
 
+    //Delete company
     public ApiResponse<Void> deleteCompany(Integer id) {
         try {
             Company company  = companyRepository.findById(id)
