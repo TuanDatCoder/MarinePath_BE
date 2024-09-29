@@ -47,6 +47,7 @@ public enum ErrorCode {
 
     // Order | CODE: 17XX
     ORDER_NOT_FOUND(1701,"Order not found", HttpStatus.NOT_FOUND),
+    ORDER_DELETED(1702,"This Order has been deleted.", HttpStatus.GONE),
 
     // Port | CODE: 18XX
     PORT_NOT_FOUND(1801,"Port not found", HttpStatus.NOT_FOUND),
