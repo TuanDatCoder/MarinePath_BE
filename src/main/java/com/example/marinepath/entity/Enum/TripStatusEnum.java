@@ -1,4 +1,4 @@
-package com.example.marinepath.entity.Enum.Trip;
+package com.example.marinepath.entity.Enum;
 
 public enum TripStatusEnum {
     SCHEDULED,        // Đã lên lịch

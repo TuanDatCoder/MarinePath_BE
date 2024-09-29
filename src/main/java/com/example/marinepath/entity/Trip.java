@@ -1,9 +1,7 @@
 package com.example.marinepath.entity;
 
-import com.example.marinepath.entity.Enum.Trip.TripStatusEnum;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.example.marinepath.entity.Enum.TripStatusEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

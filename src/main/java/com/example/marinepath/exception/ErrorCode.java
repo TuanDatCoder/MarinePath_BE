@@ -50,6 +50,7 @@ public enum ErrorCode {
 
     // Port | CODE: 18XX
     PORT_NOT_FOUND(1801,"Port not found", HttpStatus.NOT_FOUND),
+    PORT_DELETED(1802,"This port has been deleted.", HttpStatus.GONE),
 
     // Port Document | CODE: 19XX
     PORT_DOCUMENT_NOT_FOUND(1901,"Port Document not found", HttpStatus.NOT_FOUND),
@@ -59,10 +60,11 @@ public enum ErrorCode {
 
     // Trip | CODE: 21XX
     TRIP_NOT_FOUND(2101,"Trip not found", HttpStatus.NOT_FOUND),
-    TRIP_DELETED(2102,"Trip is deleted", HttpStatus.NOT_FOUND),
+    TRIP_DELETED(2102,"This trip has been deleted.", HttpStatus.GONE),
 
     // Trip Segment | CODE: 22XX
-    TRIP_SEGMENT_NOT_FOUND(2201,"Trip Segment not found", HttpStatus.NOT_FOUND);
+    TRIP_SEGMENT_NOT_FOUND(2201,"Trip Segment not found", HttpStatus.NOT_FOUND),
+    TRIP_SEGMENT_DELETED(2202,"This trip Segment has been deleted.", HttpStatus.GONE);
 
     private final Integer code;
     @Setter
