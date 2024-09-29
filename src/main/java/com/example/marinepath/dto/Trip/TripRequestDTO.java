@@ -1,6 +1,6 @@
 package com.example.marinepath.dto.Trip;
 
-import com.example.marinepath.entity.Enum.Trip.TripStatusEnum;
+import com.example.marinepath.entity.Enum.TripStatusEnum;
 import lombok.Data;
 
 import java.time.LocalDateTime;
