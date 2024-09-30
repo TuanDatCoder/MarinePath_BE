@@ -1,8 +1,11 @@
 package com.example.marinepath.repository;
 
+import com.example.marinepath.entity.Enum.PortDocumentStatusEnum;
 import com.example.marinepath.entity.PortDocument;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.relational.core.sql.In;
+
+import java.util.List;
 
 public interface PortDocumentRepository extends JpaRepository<PortDocument, Integer> {
+    List<PortDocument> findByStatusNot(PortDocumentStatusEnum portDocumentStatusEnum);
 }

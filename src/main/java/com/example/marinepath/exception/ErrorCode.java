@@ -60,6 +60,7 @@ public enum ErrorCode {
 
     // Port Document | CODE: 19XX
     PORT_DOCUMENT_NOT_FOUND(1901,"Port Document not found", HttpStatus.NOT_FOUND),
+    PORT_DOCUMENT_DELETED(1902, "This port document has been deleted.", HttpStatus.GONE),
 
     // Ship | CODE: 20XX
     SHIP_NOT_FOUND(2001,"Ship not found", HttpStatus.NOT_FOUND),
