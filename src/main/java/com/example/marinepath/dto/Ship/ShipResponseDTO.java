@@ -10,10 +10,7 @@ import java.time.LocalDateTime;
 @Data
 public class ShipResponseDTO {
     private Integer id;
-
-    @JsonProperty("companyId")
     private Integer companyId;
-
     private String shipCode;
     private String name;
     private Integer capacity;
