@@ -4,9 +4,11 @@ import com.example.marinepath.dto.ApiResponse;
 import com.example.marinepath.dto.ContainerReceipt.ContainerReceiptRequestDTO;
 import com.example.marinepath.dto.ContainerReceipt.ContainerReceiptResponseDTO;
 import com.example.marinepath.dto.ContainerReceipt.ContainerReceiptUpdateRequestDTO;
+import com.example.marinepath.entity.Container;
 import com.example.marinepath.entity.ContainerReceipt;
 import com.example.marinepath.entity.Enum.DeliveryStatusEnum;
 
+import com.example.marinepath.entity.PortDocument;
 import com.example.marinepath.exception.ApiException;
 import com.example.marinepath.exception.ErrorCode;
 import com.example.marinepath.repository.ContainerReceiptRepository;
@@ -38,10 +40,10 @@ public class ContainerReceiptService {
 
     public ApiResponse<ContainerReceiptResponseDTO> createContainerReceipt(ContainerReceiptRequestDTO requestDTO) {
         try {
-            var container = containerRepository.findById(requestDTO.getContainerId())
+            Container container = containerRepository.findById(requestDTO.getContainerId())
                     .orElseThrow(() -> new ApiException(ErrorCode.CONTAINER_NOT_FOUND));
 
-            var portDocument = portDocumentRepository.findById(requestDTO.getPortDocumentId())
+            PortDocument portDocument = portDocumentRepository.findById(requestDTO.getPortDocumentId())
                     .orElseThrow(() -> new ApiException(ErrorCode.PORT_DOCUMENT_NOT_FOUND));
 
             ContainerReceipt containerReceipt = new ContainerReceipt();
@@ -63,17 +65,17 @@ public class ContainerReceiptService {
 
     public ApiResponse<ContainerReceiptResponseDTO> updateContainerReceipt(Integer id, ContainerReceiptUpdateRequestDTO requestDTO) {
         try {
-            var containerReceipt = containerReceiptRepository.findById(id)
+            ContainerReceipt containerReceipt = containerReceiptRepository.findById(id)
                     .orElseThrow(() -> new ApiException(ErrorCode.CONTAINER_RECEIPT_NOT_FOUND));
 
             if (containerReceipt.getStatus() == DeliveryStatusEnum.DELETED) {
                 throw new ApiException(ErrorCode.CONTAINER_RECEIPT_DELETED);
             }
 
-            var container = containerRepository.findById(requestDTO.getContainerId())
+            Container container = containerRepository.findById(requestDTO.getContainerId())
                     .orElseThrow(() -> new ApiException(ErrorCode.CONTAINER_NOT_FOUND));
 
-            var portDocument = portDocumentRepository.findById(requestDTO.getPortDocumentId())
+            PortDocument portDocument = portDocumentRepository.findById(requestDTO.getPortDocumentId())
                     .orElseThrow(() -> new ApiException(ErrorCode.PORT_DOCUMENT_NOT_FOUND));
 
             containerReceipt.setContainer(container);
@@ -94,7 +96,7 @@ public class ContainerReceiptService {
 
     public ApiResponse<Void> deleteContainerReceipt(Integer id) {
         try {
-            var containerReceipt = containerReceiptRepository.findById(id)
+            ContainerReceipt containerReceipt = containerReceiptRepository.findById(id)
                     .orElseThrow(() -> new ApiException(ErrorCode.CONTAINER_RECEIPT_NOT_FOUND));
 
             containerReceiptRepository.delete(containerReceipt);
@@ -106,7 +108,7 @@ public class ContainerReceiptService {
 
     public ApiResponse<ContainerReceiptResponseDTO> getContainerReceiptById(Integer id) {
         try {
-            var containerReceipt = containerReceiptRepository.findById(id)
+            ContainerReceipt containerReceipt = containerReceiptRepository.findById(id)
                     .orElseThrow(() -> new ApiException(ErrorCode.CONTAINER_RECEIPT_NOT_FOUND));
 
             if (containerReceipt.getStatus() == DeliveryStatusEnum.DELETED) {
