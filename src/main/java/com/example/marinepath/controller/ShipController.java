@@ -42,7 +42,7 @@ public class ShipController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<ShipResponseDTO>>> getAllTrips() {
+    public ResponseEntity<ApiResponse<List<ShipResponseDTO>>> getAllShips() {
         ApiResponse<List<ShipResponseDTO>> response = shipService.getAllShips();
         return ResponseEntity.status(response.getCode()).body(response);
     }

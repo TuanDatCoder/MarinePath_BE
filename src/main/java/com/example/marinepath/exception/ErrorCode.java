@@ -22,13 +22,15 @@ public enum ErrorCode {
     USERNAME_PASSWORD_NOT_CORRECT(1012, "Username or password is not correct", HttpStatus.BAD_REQUEST),
     ACCOUNT_NOT_FOUND(1013,"Account not found", HttpStatus.NOT_FOUND),
     EMAIL_NOT_FOUND(1013,"Email not found, please register account.", HttpStatus.NOT_FOUND),
-    UNAUTHORIZED(10014, "Unauthorized access", HttpStatus.UNAUTHORIZED),
+    UNAUTHORIZED(1014, "Unauthorized access", HttpStatus.UNAUTHORIZED),
+    INTERNAL_ERROR(1015, "Internal Error", HttpStatus.INTERNAL_SERVER_ERROR),
+    SUCCESS(200, "Success",HttpStatus.OK),
+
     //    Accounts | Emails | CODE: 11XX
     INVALID_EMAIL(1100, "Invalid email", HttpStatus.BAD_REQUEST),
     EMAIL_WAIT_VERIFY(1101, "This email has been registered and is not verified, please verify and login", HttpStatus.BAD_REQUEST),
     EMAIL_EXISTED(1102, "This email has been registered, please log in!", HttpStatus.BAD_REQUEST),
-    SUCCESS(200, "Success",HttpStatus.OK),
-    INTERNAL_ERROR(1200, "Internal Error", HttpStatus.INTERNAL_SERVER_ERROR),
+    ACCOUNT_DELETED(1103,"This Account has been deleted.", HttpStatus.GONE),
 
     // Company | CODE: 12XX
     COMPANY_NOT_FOUND(1201,"Company not found", HttpStatus.NOT_FOUND),
@@ -36,12 +38,14 @@ public enum ErrorCode {
 
     // Container | CODE: 13XX
     CONTAINER_NOT_FOUND(1301,"Container not found", HttpStatus.NOT_FOUND),
+    CONTAINER_DELETED(1302,"This container has been deleted.", HttpStatus.GONE),
 
     // Container Receipt | CODE: 14XX
     CONTAINER_RECEIPT_NOT_FOUND(1401,"Container Receipt not found", HttpStatus.NOT_FOUND),
-
+    CONTAINER_RECEIPT_DELETED(1402,"This Container Receipt has been deleted.", HttpStatus.GONE),
     // Customer | CODE: 15XX
     CUSTOMER_NOT_FOUND(1501,"Customer not found", HttpStatus.NOT_FOUND),
+    CUSTOMER_DELETED(1502,"This customer has been deleted.", HttpStatus.GONE),
 
     // Incident Report| CODE: 16XX
     INCIDENT_REPORT_NOT_FOUND(1601,"Incident Report not found", HttpStatus.NOT_FOUND),
@@ -56,6 +60,7 @@ public enum ErrorCode {
 
     // Port Document | CODE: 19XX
     PORT_DOCUMENT_NOT_FOUND(1901,"Port Document not found", HttpStatus.NOT_FOUND),
+    PORT_DOCUMENT_DELETED(1902, "This port document has been deleted.", HttpStatus.GONE),
 
     // Ship | CODE: 20XX
     SHIP_NOT_FOUND(2001,"Ship not found", HttpStatus.NOT_FOUND),

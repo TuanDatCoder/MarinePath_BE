@@ -93,7 +93,7 @@ public class ShipService {
 
     public ApiResponse<Void> deleteShip(Integer id) {
         try {
-            Ship ship  = shipRepository.findById(id)
+            shipRepository.findById(id)
                     .orElseThrow(() -> new ApiException(ErrorCode.SHIP_NOT_FOUND));
             shipRepository.deleteById(id);
             return new ApiResponse<>(200, "Ship deleted successfully", null);
@@ -129,7 +129,7 @@ public class ShipService {
     }
 
     private ShipResponseDTO convertToDTO(Ship ship) {
-        ShipResponseDTO responseDTO = new ShipResponseDTO();
+        ShipResponseDTO responseDTO;
         responseDTO = objectMapper.convertValue(ship, ShipResponseDTO.class);
 
         if (ship.getCompany() != null) {
