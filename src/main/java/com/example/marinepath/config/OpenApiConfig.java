@@ -32,8 +32,7 @@ public class OpenApiConfig {
                         .description("First Code SWD392"))
                 .servers(List.of(
                         new Server().url("http://localhost:8080").description("Local server"),
-                        new Server().url("http://35.77.84.181:8081").description("Cloud server") // Thêm server cloud
-           
+                        new Server().url("http://54.250.178.89:8081").description("Cloud server") // Thêm server cloud
                 ))
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth")); // Thêm BearerAuth vào Security Requirement
     }
