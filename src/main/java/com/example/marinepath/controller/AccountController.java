@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/accounts")
@@ -21,9 +22,10 @@ public class AccountController {
         ApiResponse<AccountResponseDTO> response = accountService.getCurrentAccount();
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getCode()));
     }
-    @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<AccountResponseDTO>> updateAccount(@PathVariable Integer id, @RequestBody AccountUpdateResponseDTO accountUpdateResponseDTO) {
-        ApiResponse<AccountResponseDTO> response = accountService.updateAccount(id, accountUpdateResponseDTO);
+    @PutMapping
+    public ResponseEntity<ApiResponse<AccountResponseDTO>> updateAccount(@ModelAttribute AccountUpdateResponseDTO accountUpdateResponseDTO,
+                                                                         @RequestParam("file") MultipartFile file) {
+        ApiResponse<AccountResponseDTO> response = accountService.updateAccount(accountUpdateResponseDTO, file);
         return ResponseEntity.status(response.getCode()).body(response);
     }
 
@@ -44,5 +46,19 @@ public class AccountController {
         ApiResponse<AccountResponseDTO> response = accountService.getAccountByEmail2(email);
         return ResponseEntity.status(response.getCode()).body(response);
     }
+
+    @PutMapping("/profile")
+    public ResponseEntity<ApiResponse<AccountResponseDTO>> updateProfile(@RequestBody AccountUpdateResponseDTO accountUpdateResponseDTO) {
+        ApiResponse<AccountResponseDTO> response = accountService.updateProfile(accountUpdateResponseDTO);
+        return ResponseEntity.status(response.getCode()).body(response);
+    }
+
+    @PutMapping("/avatar")
+    public ResponseEntity<ApiResponse<String>> updateAvatar(@RequestParam("file") MultipartFile file) {
+        ApiResponse<String> response = accountService.updateAvatar(file);
+        return ResponseEntity.status(response.getCode()).body(response);
+    }
+
+
 
 }

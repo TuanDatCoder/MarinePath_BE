@@ -11,6 +11,5 @@ public class AccountUpdateResponseDTO {
     private String email;
     private String name;
     private AccountGenderEnum gender;
-    private String picture;
     private AccountStatusEnum status;
 }
