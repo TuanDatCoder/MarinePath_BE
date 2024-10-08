@@ -8,15 +8,17 @@ import com.example.marinepath.dto.Auth.Login.LoginRequestDTO;
 import com.example.marinepath.dto.Auth.Login.LoginResponseDTO;
 import com.example.marinepath.dto.Auth.Register.RegisterRequestDTO;
 import com.example.marinepath.entity.Account;
+import com.example.marinepath.entity.Company;
 import com.example.marinepath.entity.Enum.Account.AccountProviderEnum;
 import com.example.marinepath.entity.Enum.Account.AccountStatusEnum;
-import com.example.marinepath.entity.Enum.OrderStatusEnum;
 import com.example.marinepath.exception.ApiException;
 import com.example.marinepath.exception.ErrorCode;
 import com.example.marinepath.exception.Token.InvalidToken;
 import com.example.marinepath.repository.AccountRepository;
+import com.example.marinepath.repository.CompanyRepository;
 import com.example.marinepath.security.JwtTokenUtil;
 import com.example.marinepath.utils.AccountUtils;
+import com.example.marinepath.utils.UploadFileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,6 +28,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -36,6 +39,9 @@ public class AccountService {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private CompanyRepository companyRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -57,6 +63,11 @@ public class AccountService {
 
     @Autowired
     private AccountUtils accountUtils;
+
+    @Autowired
+    private UploadFileUtils uploadFileUtils;
+    @Autowired
+    private UrlShortenerService urlShortenerService;
 
     public ApiResponse<String> registerNewAccount(RegisterRequestDTO registerRequestDTO) {
         if (accountRepository.findByEmail(registerRequestDTO.getEmail()).isPresent()) {
@@ -136,8 +147,6 @@ public class AccountService {
         return new ApiResponse<>(200, "Logout successful", null);
     }
 
-
-
     public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
         Account account = accountRepository.findByEmail(loginRequestDTO.getEmail())
                 .orElseThrow(() -> new ApiException("User not found with email: " + loginRequestDTO.getEmail(), ErrorCode.USER_NOT_FOUND));
@@ -187,25 +196,16 @@ public class AccountService {
         }
     }
 
-
-
-    public ApiResponse<AccountResponseDTO> updateAccount(Integer id, AccountUpdateResponseDTO accountUpdateResponseDTO) {
+    public ApiResponse<AccountResponseDTO> updateAccount(AccountUpdateResponseDTO accountUpdateResponseDTO, MultipartFile file) {
         try {
-            Account account = accountRepository.findById(id)
+            Account curAccount = accountUtils.getCurrentAccount();
+            Account account = accountRepository.findById(curAccount.getId())
                     .orElseThrow(() -> new ApiException(ErrorCode.ACCOUNT_NOT_FOUND));
-
-            if (account.getStatus() == AccountStatusEnum.DELETED) {
-                throw new ApiException(ErrorCode.ACCOUNT_DELETED);
+            updateProfile(accountUpdateResponseDTO);
+            if (file != null && !file.isEmpty()) {
+                updateAvatar(file);
             }
-
-            account.setEmail(accountUpdateResponseDTO.getEmail());
-            account.setName(accountUpdateResponseDTO.getName());
-            account.setGender(accountUpdateResponseDTO.getGender());
-            account.setPicture(accountUpdateResponseDTO.getPicture());
-            account.setStatus(accountUpdateResponseDTO.getStatus());
-
-            Account updatedAccount = accountRepository.save(account);
-            AccountResponseDTO responseDTO = convertToDto(updatedAccount);
+            AccountResponseDTO responseDTO = convertToDto(account);
             return new ApiResponse<>(200, "Account updated successfully", responseDTO);
         } catch (ApiException e) {
             return new ApiResponse<>(e.getErrorCode().getHttpStatus().value(), e.getErrorCode().getMessage(), null);
@@ -257,6 +257,68 @@ public class AccountService {
     }
 
 
+    public ApiResponse<AccountResponseDTO> updateProfile(AccountUpdateResponseDTO accountUpdateResponseDTO) {
+        try {
+            Account curAccount = accountUtils.getCurrentAccount();
+            Account account = accountRepository.findById(curAccount.getId())
+                    .orElseThrow(() -> new ApiException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+            Company company = companyRepository.findById(accountUpdateResponseDTO.getCompanyId())
+                    .orElseThrow(() -> new ApiException(ErrorCode.ACCOUNT_NOT_FOUND));
+            if (account.getStatus() == AccountStatusEnum.DELETED) {
+                throw new ApiException(ErrorCode.ACCOUNT_DELETED);
+            }
+
+            if (!account.getEmail().equals(accountUpdateResponseDTO.getEmail())) {
+                Optional<Account> existingAccount = accountRepository.findByEmail(accountUpdateResponseDTO.getEmail());
+                if (existingAccount.isPresent()) {
+                    throw new ApiException(ErrorCode.EMAIL_ALREADY_EXISTS);
+                }
+            }
+
+            account.setCompany(company);
+            account.setEmail(accountUpdateResponseDTO.getEmail());
+            account.setName(accountUpdateResponseDTO.getName());
+            account.setGender(accountUpdateResponseDTO.getGender());
+            account.setStatus(accountUpdateResponseDTO.getStatus());
+
+            Account updatedAccount = accountRepository.save(account);
+            AccountResponseDTO responseDTO = convertToDto(updatedAccount);
+            return new ApiResponse<>(200, "Account updated successfully", responseDTO);
+        } catch (ApiException e) {
+            return new ApiResponse<>(e.getErrorCode().getHttpStatus().value(), e.getErrorCode().getMessage(), null);
+        } catch (Exception e) {
+            return new ApiResponse<>(500, "Error updating account: " + e.getMessage(), null);
+        }
+    }
+
+
+
+    public ApiResponse<String> updateAvatar(MultipartFile file) {
+        try {
+            Account curAccount = accountUtils.getCurrentAccount();
+            Account account = accountRepository.findById(curAccount.getId())
+                    .orElseThrow(() -> new ApiException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+            if (account.getStatus() == AccountStatusEnum.DELETED) {
+                throw new ApiException(ErrorCode.ACCOUNT_DELETED);
+            }
+
+            String fileName = uploadFileUtils.uploadFile(file);
+            String url = uploadFileUtils.getSignedImageUrl(fileName);
+            String shortenedUrl = urlShortenerService.shortenUrl(url);
+            account.setPicture(shortenedUrl);
+            accountRepository.save(account);
+
+            return new ApiResponse<>(200, "Avatar updated successfully", shortenedUrl);
+        } catch (ApiException e) {
+            return new ApiResponse<>(e.getErrorCode().getHttpStatus().value(), e.getErrorCode().getMessage(), null);
+        } catch (Exception e) {
+            return new ApiResponse<>(500, "Error updating avatar: " + e.getMessage(), null);
+        }
+    }
+
+
     private AccountResponseDTO convertToDto(Account account) {
         AccountResponseDTO responseDTO = objectMapper.convertValue(account, AccountResponseDTO.class);
 
@@ -264,4 +326,5 @@ public class AccountService {
 
         return responseDTO;
     }
+    ////////////////////////////
 }
