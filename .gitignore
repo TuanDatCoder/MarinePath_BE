@@ -3,6 +3,8 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+/src/main/resources/firebase/*.json
+/src/main/resources/firebase/serviceKey.json
 
 ### STS ###
 .apt_generated
