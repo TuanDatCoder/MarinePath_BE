@@ -31,6 +31,7 @@ public enum ErrorCode {
     EMAIL_WAIT_VERIFY(1101, "This email has been registered and is not verified, please verify and login", HttpStatus.BAD_REQUEST),
     EMAIL_EXISTED(1102, "This email has been registered, please log in!", HttpStatus.BAD_REQUEST),
     ACCOUNT_DELETED(1103,"This Account has been deleted.", HttpStatus.GONE),
+    EMAIL_ALREADY_EXISTS(1104, "This email address already exists.", HttpStatus.CONFLICT),
 
     // Company | CODE: 12XX
     COMPANY_NOT_FOUND(1201,"Company not found", HttpStatus.NOT_FOUND),
