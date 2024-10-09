@@ -31,7 +31,10 @@ public class ContainerService {
 
     public ApiResponse<ContainerResponseDTO> createContainer(ContainerRequestDTO containerRequestDTO) {
         try {
-            Port port = portRepository.findById(containerRequestDTO.getPortId())
+            Port startPort = portRepository.findById(containerRequestDTO.getStartPort())
+                    .orElseThrow(() -> new ApiException(ErrorCode.PORT_NOT_FOUND));
+
+            Port endPort = portRepository.findById(containerRequestDTO.getEndPort())
                     .orElseThrow(() -> new ApiException(ErrorCode.PORT_NOT_FOUND));
 
             Order order = orderRepository.findById(containerRequestDTO.getOrderId())
@@ -41,7 +44,8 @@ public class ContainerService {
                     .orElseThrow(() -> new ApiException(ErrorCode.CONTAINER_RECEIPT_NOT_FOUND));
 
             Container container = new Container();
-            container.setPort(port);
+            container.setStartPort(startPort);
+            container.setEndPort(endPort);
             container.setOrder(order);
             container.setContainerReceipt(containerReceipt);
             container.setWeight(containerRequestDTO.getWeight());
@@ -64,9 +68,14 @@ public class ContainerService {
         ContainerResponseDTO responseDTO = new ContainerResponseDTO();
         responseDTO = objectMapper.convertValue(container, ContainerResponseDTO.class);
 
-        if (container.getPort() != null) {
-            responseDTO.setPortId(container.getPort().getId());
+        if (container.getStartPort() != null) {
+            responseDTO.setStartPort(container.getStartPort().getId());
         }
+
+        if (container.getEndPort() != null) {
+            responseDTO.setEndPort(container.getEndPort().getId());
+        }
+
         if (container.getOrder() != null) {
             responseDTO.setOrderId(container.getOrder().getId());
         }
@@ -83,9 +92,13 @@ public class ContainerService {
             if (existingContainer.getStatus() == ContainerStatusEnum.DELETED) {
                 throw new ApiException(ErrorCode.CONTAINER_DELETED);
             }
-            Port port = portRepository.findById(containerRequestDTO.getPortId())
+            Port startPort = portRepository.findById(containerRequestDTO.getStartPort())
                     .orElseThrow(() -> new ApiException(ErrorCode.PORT_NOT_FOUND));
-            existingContainer.setPort(port);
+            existingContainer.setStartPort(startPort);
+
+            Port endPort = portRepository.findById(containerRequestDTO.getEndPort())
+                    .orElseThrow(() -> new ApiException(ErrorCode.PORT_NOT_FOUND));
+            existingContainer.setEndPort(endPort);
 
             Order order = orderRepository.findById(containerRequestDTO.getOrderId())
                     .orElseThrow(() -> new ApiException(ErrorCode.ACCOUNT_NOT_FOUND));
