@@ -148,24 +148,35 @@ public class AccountService {
     }
 
     public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
-        Account account = accountRepository.findByEmail(loginRequestDTO.getEmail())
-                .orElseThrow(() -> new ApiException("User not found with email: " + loginRequestDTO.getEmail(), ErrorCode.USER_NOT_FOUND));
-
-        if (account.getProvider() != AccountProviderEnum.LOCAL) {
-            return new LoginResponseDTO("Please log in using Google", null, null, null);
-        }
-
         try {
+            Account account = accountRepository.findByEmail(loginRequestDTO.getEmail())
+                    .orElseThrow(() -> new ApiException("User not found with email: " + loginRequestDTO.getEmail(), ErrorCode.USER_NOT_FOUND));
+
+            if (account.getStatus() == AccountStatusEnum.UNVERIFIED) {
+                return new LoginResponseDTO("Account not verified", "Account is unverified", null, null);
+            }
+
+            if (account.getProvider() != AccountProviderEnum.LOCAL) {
+                return new LoginResponseDTO("Please log in using Google", null, null, null);
+            }
+
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequestDTO.getEmail(), loginRequestDTO.getPassword())
             );
 
+            // Tạo token sau khi xác thực thành công
             UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(loginRequestDTO.getEmail());
             String accessToken = jwtTokenUtil.generateToken(userDetails);
             String refreshToken = jwtTokenUtil.generateRefreshToken(userDetails);
+
             return new LoginResponseDTO("Login successful", null, accessToken, refreshToken);
+
         } catch (BadCredentialsException e) {
-            throw new ApiException("Invalid email or password", ErrorCode.USERNAME_PASSWORD_NOT_CORRECT);
+            return new LoginResponseDTO("Invalid email or password", "Invalid credentials", null, null);
+        } catch (ApiException e) {
+            return new LoginResponseDTO(e.getErrorCode().getMessage(), e.getErrorCode().getMessage(), null, null);
+        } catch (Exception e) {
+            return new LoginResponseDTO("Login failed", "Internal error: " + e.getMessage(), null, null);
         }
     }
 
