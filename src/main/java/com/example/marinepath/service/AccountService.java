@@ -251,6 +251,28 @@ public class AccountService {
             return new ApiResponse<>(500, "Error retrieving account: " + e.getMessage(), null);
         }
     }
+    public ApiResponse<List<AccountResponseDTO>> getAccountsByCompanyId(Integer companyId) {
+        try {
+            List<Account> accounts = accountRepository.findAllByCompanyId(companyId);
+
+            // Kiểm tra xem danh sách có rỗng không
+            if (accounts.isEmpty()) {
+                throw new ApiException(ErrorCode.ACCOUNT_NOT_FOUND);
+            }
+
+            // Chuyển đổi danh sách Account thành danh sách AccountResponseDTO
+            List<AccountResponseDTO> responseDTOs = accounts.stream()
+                    .map(this::convertToDto)
+                    .collect(Collectors.toList());
+
+            return new ApiResponse<>(200, "Accounts found", responseDTOs);
+        } catch (ApiException e) {
+            return new ApiResponse<>(e.getErrorCode().getHttpStatus().value(), e.getErrorCode().getMessage(), null);
+        } catch (Exception e) {
+            return new ApiResponse<>(500, "Error retrieving accounts: " + e.getMessage(), null);
+        }
+    }
+
 
     public ApiResponse<AccountResponseDTO> getAccountByEmail2(String email) {
         try {
@@ -302,7 +324,6 @@ public class AccountService {
             return new ApiResponse<>(500, "Error updating account: " + e.getMessage(), null);
         }
     }
-
 
 
     public ApiResponse<String> updateAvatar(MultipartFile file) {

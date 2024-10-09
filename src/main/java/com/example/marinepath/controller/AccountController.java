@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/accounts")
 public class AccountController {
@@ -40,6 +42,11 @@ public class AccountController {
         ApiResponse<AccountResponseDTO> response = accountService.getAccountById(id);
         return ResponseEntity.status(response.getCode()).body(response);
     }
+    @GetMapping("/company/{companyId}")
+    public ResponseEntity<ApiResponse<List<AccountResponseDTO>>> getAccountsByCompanyId(@PathVariable Integer companyId) {
+        ApiResponse<List<AccountResponseDTO>> response = accountService.getAccountsByCompanyId(companyId);
+        return ResponseEntity.status(response.getCode()).body(response);
+    }
 
     @GetMapping("/email/{email}")
     public ResponseEntity<ApiResponse<AccountResponseDTO>> getAccountByEmail(@PathVariable String email) {
@@ -59,8 +66,6 @@ public class AccountController {
         return ResponseEntity.status(response.getCode()).body(response);
     }
 
-/////////////////////
-    ///////////////////////////
 
 
 
