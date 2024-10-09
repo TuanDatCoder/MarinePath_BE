@@ -7,7 +7,8 @@ import lombok.Data;
 @Data
 public class ContainerResponseDTO {
     private Integer id;
-    private Integer portId;
+    private Integer startPort;
+    private Integer endPort;
     private Integer orderId;
     private Integer containerReceiptId;
     private String containerCode;

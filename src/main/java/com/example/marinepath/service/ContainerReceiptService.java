@@ -6,7 +6,7 @@ import com.example.marinepath.dto.ContainerReceipt.ContainerReceiptResponseDTO;
 import com.example.marinepath.dto.ContainerReceipt.ContainerReceiptUpdateRequestDTO;
 import com.example.marinepath.entity.Container;
 import com.example.marinepath.entity.ContainerReceipt;
-import com.example.marinepath.entity.Enum.DeliveryStatusEnum;
+import com.example.marinepath.entity.Enum.ContainerReceiptStatusEnum;
 
 import com.example.marinepath.entity.PortDocument;
 import com.example.marinepath.exception.ApiException;
@@ -51,7 +51,7 @@ public class ContainerReceiptService {
             containerReceipt.setPortDocument(portDocument);
             containerReceipt.setDeliveryDate(requestDTO.getDeliveryDate());
             containerReceipt.setReceiverName(requestDTO.getReceiverName());
-            containerReceipt.setStatus(DeliveryStatusEnum.PENDING);
+            containerReceipt.setStatus(ContainerReceiptStatusEnum.PENDING);
 
             ContainerReceipt savedContainerReceipt = containerReceiptRepository.save(containerReceipt);
             ContainerReceiptResponseDTO responseDTO = convertToDto(savedContainerReceipt);
@@ -68,7 +68,7 @@ public class ContainerReceiptService {
             ContainerReceipt containerReceipt = containerReceiptRepository.findById(id)
                     .orElseThrow(() -> new ApiException(ErrorCode.CONTAINER_RECEIPT_NOT_FOUND));
 
-            if (containerReceipt.getStatus() == DeliveryStatusEnum.DELETED) {
+            if (containerReceipt.getStatus() == ContainerReceiptStatusEnum.DELETED) {
                 throw new ApiException(ErrorCode.CONTAINER_RECEIPT_DELETED);
             }
 
@@ -111,7 +111,7 @@ public class ContainerReceiptService {
             ContainerReceipt containerReceipt = containerReceiptRepository.findById(id)
                     .orElseThrow(() -> new ApiException(ErrorCode.CONTAINER_RECEIPT_NOT_FOUND));
 
-            if (containerReceipt.getStatus() == DeliveryStatusEnum.DELETED) {
+            if (containerReceipt.getStatus() == ContainerReceiptStatusEnum.DELETED) {
                 throw new ApiException(ErrorCode.CONTAINER_RECEIPT_DELETED);
             }
 
@@ -124,7 +124,7 @@ public class ContainerReceiptService {
 
     public ApiResponse<List<ContainerReceiptResponseDTO>> getAllContainerReceipts() {
         try {
-            List<ContainerReceipt> containerReceipts = containerReceiptRepository.findByStatusNot(DeliveryStatusEnum.DELETED);
+            List<ContainerReceipt> containerReceipts = containerReceiptRepository.findByStatusNot(ContainerReceiptStatusEnum.DELETED);
             List<ContainerReceiptResponseDTO> responseDTOs = containerReceipts.stream()
                     .map(this::convertToDto)
                     .collect(Collectors.toList());

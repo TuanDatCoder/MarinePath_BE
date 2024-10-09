@@ -20,15 +20,21 @@ public class Container {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    @JoinColumn(name = "port_id", nullable = false)
-    private Port port;
+    @JoinColumn(name = "start_port_id", nullable = false)
+    private Port startPort;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinColumn(name = "end_port_id", nullable = false)
+    private Port endPort;
 
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
+
 
     @OneToOne
     @JsonIgnore
