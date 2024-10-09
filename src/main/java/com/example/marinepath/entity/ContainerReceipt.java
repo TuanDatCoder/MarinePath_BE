@@ -1,6 +1,6 @@
 package com.example.marinepath.entity;
 
-import com.example.marinepath.entity.Enum.DeliveryStatusEnum;
+import com.example.marinepath.entity.Enum.ContainerReceiptStatusEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -36,5 +36,5 @@ public class ContainerReceipt {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private DeliveryStatusEnum status;
+    private ContainerReceiptStatusEnum status;
 }

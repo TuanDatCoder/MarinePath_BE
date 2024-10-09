@@ -47,6 +47,9 @@ public class Port {
     @OneToMany(mappedBy = "endPort") // Sửa lại để chỉ đến endPort
     private List<TripSegment> endTripSegments;
 
-    @OneToMany(mappedBy = "port")
-    private List<Container> containers;
+    @OneToMany(mappedBy = "startPort", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Container> startContainers;
+
+    @OneToMany(mappedBy = "endPort", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Container> endContainers;
 }

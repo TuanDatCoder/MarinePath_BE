@@ -1,6 +1,6 @@
 package com.example.marinepath.dto.ContainerReceipt;
 
-import com.example.marinepath.entity.Enum.DeliveryStatusEnum;
+import com.example.marinepath.entity.Enum.ContainerReceiptStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,5 +15,5 @@ public class ContainerReceiptUpdateRequestDTO {
     private Integer portDocumentId;
     private LocalDateTime deliveryDate;
     private String receiverName;
-    private DeliveryStatusEnum status;
+    private ContainerReceiptStatusEnum status;
 }
